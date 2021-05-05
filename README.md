@@ -9,4 +9,5 @@ The Frontend is written in React.js using the Rest api and the Prettier style gu
 The Database is hosted through Mongodb Atlas with a free trial
 
 Version of npm: 6.14.12
+
 Version of Flask: 1.1.2
