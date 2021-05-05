@@ -7,3 +7,5 @@ The Backend is written in Python using Flask and the style guide specified at ht
 The Frontend is written in React.js using the Rest api and the Prettier style guide specified at https://github.com/prettier/prettier-vscode 
 
 The Database is hosted through Mongodb Atlas with a free trial
+
+Version of Flask: 1.1.2
