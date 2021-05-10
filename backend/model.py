@@ -1,11 +1,8 @@
-import pymongo
+from pymongo import MongoClient
 from bson import ObjectId
-# import dns from dnspython to yuse mongodb+srv URI
-import dns
-# import os to get env variables
-import os
-# import dotenv to hide Atlas Credentials
+from os import environ
 from dotenv import load_dotenv
+
 
 class Model(dict):
     __getattr__ = dict.get
@@ -13,13 +10,14 @@ class Model(dict):
     __setattr__ = dict.__setitem__
 
     load_dotenv()  # take environment variables from .env.
+    MONGODB_URI = environ['MONGODB_URI']
 
-    MONGODB_URI = os.environ['MONGODB_URI']
-
-    db_client = pymongo.MongoClient(MONGODB_URI)
-    # db name is 'users' and collection name is 'users_list'
-    collection = db_client["users"]["users_list"]
-
+    db_client = MongoClient(MONGODB_URI)
+    db_users = db_client["users"]["users_list"]
+    db_admins = db_client["users"]["admin_list"]
+    db_listings = db_client["listings"]["listings"]
+    db_images = db_client["listings"]["images"]
+    '''
     def save(self):
         if not self._id:
             self.collection.insert(self)
@@ -42,14 +40,33 @@ class Model(dict):
             resp = self.collection.remove({"_id": ObjectId(self._id)})
             self.clear()
             return resp
+    '''
+    def create_listing(self, user, listing_text, contact_info, image=None):
+        # put listing into database
+        # get its id
+        # then add that id to the list of posts a user has made,
+        # return the listing
+        pass
 
-    # .env file should include a statmement MONGODB_URI=mongodb+srv://<atlas-user>:<password>@cluster0.6f9re.mongodb.net/<myFirstDatabase>?retryWrites=true&w=majority
-    # with <atlas-user>, <password> and <myFirstDatabase> updated accordingly
-    # make sure .env is in .gitignore so that your password isn't relased into the wild
+    def get_listing(self, listing_id):
+        pass
 
+    def delete_listing(self, listing):
+        pass
 
-    def find_by_username(self, username):
-        users = list(self.collection.find({"username": username}))
-        if len(users) == 1:
-            return users[0]
-        return None
+    def add_image_to_listing(self, image):
+        pass
+
+    def create_user(self, username, hashed_password, salt):
+        pass
+
+    def get_user(self, username):
+        return self.db_users.find_one({"username": username})
+
+    def delete_user(self, user):
+        pass
+
+    def user_is_admin(self, username):
+        if self.db_admins.find_one({"username": username}):
+            return True
+        return False
