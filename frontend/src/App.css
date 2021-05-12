@@ -36,3 +36,26 @@
     transform: rotate(360deg);
   }
 }
+
+h1, h2, h3, h4, h5, h6, p, text{
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
+.floatAbovePage{
+  position: absolute;
+  right: 0px;
+  left: 0px;
+  top: 20%;
+  bottom: 20%;
+}
+#SignInBox{
+  background-color: white;
+  display: inline-block;
+  padding: 20px 20px 20px 20px;
+  box-shadow: 0px 0px 15px black;
+  border-radius: 0.5em;
+}
+#SignInBox > div:first-child > Button{
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}

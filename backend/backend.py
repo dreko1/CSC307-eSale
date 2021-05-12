@@ -19,10 +19,12 @@ def validate_password(pw, db_pw, db_salt):
     hashed_password = b.hashpw(pw, db_salt)
     return b.checkpw(hashed_password, db_pw)
 
-@app.route('/login', methods=['Get'])
+@app.route('/login', methods=['Post'])
 def login():
-    username = request.args.get('username')
-    password = request.args.get('password')
+    requestData = request.get_json()
+    username = requestData['username']
+    password = requestData['password']
+    print(requestData)
     if username and password:
         user = database.get_user(username)
         if user and validate_password(password, user["password"], user["salt"]):
