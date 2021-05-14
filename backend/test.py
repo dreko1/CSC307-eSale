@@ -5,9 +5,3 @@ import backend as b
 
 def test_1():
     assert 1 == 1
-
-def test_password_1():
-    assert b.validate_password(b'test') == 0
-
-def test_password_2():
-    assert b.validate_password(b'wrong') == 1
