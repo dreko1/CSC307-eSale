@@ -1,4 +1,5 @@
 import bcrypt as b
+from bson.objectid import ObjectId
 from model import Model
 from flask import Flask
 from flask import request
@@ -31,6 +32,7 @@ def login():
             return user
     return {}
 
+
 @app.route('/newuser', methods=['Post'])
 def new_user():
     username = request.args.get('username')
@@ -44,4 +46,14 @@ def new_user():
             user = database.get_user(username)
             if user:
                 return user
+    return {}
+
+
+@app.route('/post', methods=['Post'])
+def post_listing():
+    requestData = request.get_json()
+    user = requestData['username']
+    text = requestData['text']
+    contact = requestData['contact']
+    listing = database.create_listing(user, text, contact, {"image": None})
     return {}
