@@ -2,6 +2,7 @@ import React from 'react'
 import {Button, Container} from '@material-ui/core';
 import {useState} from 'react'
 import makePostCall from './axiosMethods'
+import Signup from './Signup'
 import Login from './Login'
 import './App.css';
 
@@ -72,7 +73,7 @@ function SignIn(props) {
                     <Button variant="contained" onClick={continueAsGuest}>Continue As Guest</Button>
                 </div>
                 <div hidden><Login/></div>
-                <div hidden><Login/></div>
+                <div hidden><Signup/></div>
             </div>
         </div>
     </Container>);
