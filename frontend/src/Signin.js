@@ -65,15 +65,17 @@ function SignIn(props) {
     //<Container/> is Material-UI's way of centering.
     //There are css properties in app.css that handle making the login box look pretty and float above the page.
     return (<Container>
-        <div class="floatAbovePage">
-            <div id="SignInBox">
-                <div>
-                    <Button variant="contained" onClick={showLogin}>Login</Button>
-                    <Button variant="contained" onClick={showSignUp}>Sign Up</Button>
-                    <Button variant="contained" onClick={continueAsGuest}>Continue As Guest</Button>
+        <div>
+            <div class="floatAbovePage">
+                <div id="SignInBox">
+                    <div>
+                        <Button variant="contained" onClick={showLogin}>Login</Button>
+                        <Button variant="contained" onClick={showSignUp}>Sign Up</Button>
+                        <Button variant="contained" onClick={continueAsGuest}>Continue As Guest</Button>
+                    </div>
+                    <div hidden><Login/></div>
+                    <div hidden><Signup/></div>
                 </div>
-                <div hidden><Login/></div>
-                <div hidden><Signup/></div>
             </div>
         </div>
     </Container>);
