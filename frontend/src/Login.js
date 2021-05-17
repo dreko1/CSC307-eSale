@@ -31,6 +31,7 @@ function Login(props) {
                 console.log(response);
             }else{
                 console.log("login request failed");
+                //TODO tell user why it failed. wrong password, non-existant username, etc.
             }
         });
 	}
@@ -38,7 +39,7 @@ function Login(props) {
     //<Container/> is Material-UI's way of centering.
     return (<Container>
         <div>
-            <h1>eSale Login</h1>
+            <h1>Login</h1>
             <form>
                 <div class="container">
                     <TextField 
