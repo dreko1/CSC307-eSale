@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, TextField, Container} from '@material-ui/core';
+import {Button, TextField, Container, unstable_createMuiStrictModeTheme} from '@material-ui/core';
 import {useState} from 'react'
 import makePostCall from './axiosMethods'
 import './App.css';
@@ -58,7 +58,7 @@ function Signup(props) {
                         value={user.password}
                     required/>
                     <br/>
-                    <TextField
+                    <TextField type="password"
                         helperText="Confirm Password"
                         onChange={(event) => updateProperty("password2", event.target.value)}
                         value={user.password2}
