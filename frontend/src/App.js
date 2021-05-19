@@ -1,5 +1,6 @@
 import './App.css';
 import SignIn from './Signin'
+import Header from './Header'
 
 //I do not know how to present different html based on whether you are on the main page or some sub-page.
 //Right now it just renders the main page (which only has <Login> at the moment)
@@ -10,6 +11,7 @@ function App() {
     //I just put some random lorem ipsum text in there to make sure the sign in works. Remove it if you want.
     return (
     <div className="App">
+        <Header />
         <SignIn />
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consectetur magna ac arcu condimentum blandit. Nunc a laoreet enim. Duis rhoncus lobortis turpis sit amet iaculis. Curabitur convallis, lectus sed volutpat pellentesque, magna purus eleifend nulla, nec condimentum velit lacus vitae est. Sed augue odio, bibendum at molestie sit amet, congue vel elit. Suspendisse eu lectus nisi. Nulla finibus turpis nec efficitur accumsan. Donec nec fermentum orci. Ut lobortis aliquet metus, facilisis lobortis nisi consectetur a. Aliquam vulputate ante at est commodo cursus. Vestibulum consectetur velit sapien, sed vehicula leo hendrerit vitae. Nullam ut dictum est. Integer semper neque eros, vitae maximus mi consequat eget. Maecenas ut consequat arcu.</p>
         <p>Nulla facilisi. In bibendum lorem eu diam vehicula ullamcorper. Mauris fermentum cursus risus, in eleifend elit finibus vitae. Duis rhoncus nisl sed luctus cursus. Vestibulum gravida ante in volutpat volutpat. Vivamus bibendum molestie metus quis ultrices. Nullam rhoncus congue placerat.</p>
