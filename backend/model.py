@@ -73,7 +73,7 @@ class Model(dict):
         self.db_remove(self.db_listings, listing)
         return
 
-    def create_user(self, username, hashed_password, salt):
+    def create_user(self, username, email, hashed_password, salt):
         pass
 
     def get_user(self, username):
@@ -86,3 +86,66 @@ class Model(dict):
         if self.db_admins.find_one({"username": username}):
             return True
         return False
+
+
+# class User(Model):
+#     # .env file should include a statmement MONGODB_URI=mongodb+srv://<atlas-user>:<password>@cluster0.6f9re.mongodb.net/<myFirstDatabase>?retryWrites=true&w=majority
+#     # with <atlas-user>, <password> and <myFirstDatabase> updated accordingly
+#     # make sure .env is in .gitignore so that your password isn't relased into the wild
+    
+#     load_dotenv()  # take environment variables from .env.
+#     MONGODB_URI = environ['MONGODB_URI']
+
+#     db_client = MongoClient(MONGODB_URI)
+#     db_users = db_client["users"]["users_list"]
+#     db_admins = db_client["users"]["admin_list"]
+
+#     def create(self, username, hashed_password, salt):
+#         pass
+
+#     def get(self, username):
+#         return self.db_users.find_one({"username": username})
+
+#     def delete(self, user):
+#         pass
+
+#     def is_admin(self, username):
+#         if self.db_admins.find_one({"username": username}):
+#             return True
+#         return False
+
+
+# class Listing(Model):
+#     # .env file should include a statmement MONGODB_URI=mongodb+srv://<atlas-user>:<password>@cluster0.6f9re.mongodb.net/<myFirstDatabase>?retryWrites=true&w=majority
+#     # with <atlas-user>, <password> and <myFirstDatabase> updated accordingly
+#     # make sure .env is in .gitignore so that your password isn't relased into the wild
+
+#     load_dotenv()  # take environment variables from .env.
+#     MONGODB_URI = os.environ['MONGODB_URI']
+    
+#     db_client = MongoClient(MONGODB_URI)
+#     db_listings = db_client["listings"]["listings"]
+#     db_images = db_client["listings"]["images"]
+
+#     #creates a listing with the given arguments, adds it to the database (and image if provided), then returns the listing.
+#     def create(self, user, listing_desc, contact_info, image=None):
+#         imageId = None
+#         if image:
+#             imageAddResult = self.db_add(self.db_images, image)
+#             if imageAddResult:
+#                 imageId = imageAddResult["_id"]
+#         return self.db_add(self.db_listings, {
+#             "poster": user,
+#             "desc": listing_desc,
+#             "contact": contact_info,
+#             "image": imageId
+#         })
+
+#     #deletes the listing from the database and its corresponding image (if applicable)
+#     def delete(self, listing):
+#         imageId = listing["image"]
+#         if imageId:
+#             self.db_delete(self.db_images, imageId)
+#         self.db_remove(self.db_listings, listing)
+#         return
+
