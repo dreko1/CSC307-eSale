@@ -12,19 +12,33 @@ function Login(props) {
     const [user, setUser] = useState({
         username: '',
         password: '',
+        usernameError: '',
+        passwordError: '',
     });
     
-    //Updates the username property of the usestate, while keeping password the same.
-    function updateUsername(event) {
-        setUser({username: event.target.value, password: user['password']});
+    //Updates one property of the usestate, and then checks for errors.
+    function updateProperty(property, value){
+        var stateCopy = Object.assign({}, user);
+        stateCopy[property] = value;
+        if(stateCopy["password"].length>=6){
+            stateCopy["passwordError"] = "";
+        }
+        if(stateCopy["username"]!=""){
+            stateCopy["usernameError"] = "";
+        }
+        setUser(stateCopy);
     }
-    //Updates the password property of the usestate, while keeping username the same.
-    function updatePassword(event) {
-        setUser({username: user['username'], password: event.target.value});
-    }
+
     //This function makes a post call, then has to-be-implemented logic based off of the response.
     //TODO
     function submitForm(){
+        if(user.username==""){
+            updateProperty("usernameError", "Must provide a username");
+            return;
+        }else if(user.password.length<6){
+            updateProperty("passwordError", "Password must be at least 6 characters");
+            return;
+        }
         makePostCall('/login', user).then(response => {
             if(response.status==201){
                 console.log("login request succeded");
@@ -44,14 +58,18 @@ function Login(props) {
                 <div class="container">
                     <TextField 
                         helperText="Username" 
-                        onChange={updateUsername} // <- This line and the following one are how we will handle use states.
+                        onChange={(event) => updateProperty("username", event.target.value)} // <- This line and the following one are how we will handle use states.
                         value={user.username} // <- The format is readable and it can be used on any element.
+                        error={user.usernameError}
+                        title={user.usernameError}
                     required/>
                     <br/>
                     <TextField type="password"
                         helperText="Password"
-                        onChange={updatePassword}
+                        onChange={(event) => updateProperty("password", event.target.value)}
                         value={user.password}
+                        error={user.passwordError}
+                        title={user.passwordError}
                     required/>
                     <br/><br/>
                     <Button variant="contained" onClick={submitForm}>Login</Button>
