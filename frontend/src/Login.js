@@ -60,7 +60,6 @@ function Login(props) {
             </form>
         </div>
     </Container>);
->>>>>>> 8721c8b33e149aebc7a41253a50cbb2df2216e5c
 }
 
 
