@@ -13,12 +13,11 @@ class Model(dict):
     # Saves the item in the database if it does not already exist
     def save(self):
         if not self._id: # If not in db, add to db
-            resp = self.collection.insert_one(self)
+            self.collection.insert_one(self)
             self._id = str(self._id)
         else: # If in db already, update item
-            resp = self.collection.update_one({"_id": ObjectId(self._id)}, self)
+            self.collection.update_one({"_id": ObjectId(self._id)}, self)
         self._id = str(self._id)
-        return resp
     
     # Reload the db, if the item exists return True, else return False
     def reload(self):
@@ -119,9 +118,18 @@ class User(Model):
     collection = db_client["users"]["users_list"]
     # db_admins = db_client["users"]["admin_list"]
 
+    # def add(self):
+    #     if not self._id:  # If not in db, add to db
+    #         resp = self.collection.insert_one(self)
+    #         self._id = str(self._id)
+    #     else:  # If in db already, update item
+    #         resp = self.collection.update_one(
+    #             {"_id": ObjectId(self._id)}, self)
+    #     self._id = str(self._id)
+    #     return resp
+
     def get(self, username):
-        user = self.db_users.find_one({"username": username})
-        user["_id"] = str(user["_id"])
+        user = self.collection.find_one({"username": username})
         return user
 
     def get_likes(self, username):
@@ -148,11 +156,17 @@ class Listing(Model):
         === General Format ===
 
         Listing: {
+            price: float
             description: str
             categories: list[str]
             seller: str              <-(this will probably just be the sellers username)
-            location: dict()
+            contact: str
+            location: {
+                state:
+                zip:
+            }
             images: list[image_url]
+            time_posted: {}
         }
     """
     
@@ -164,48 +178,59 @@ class Listing(Model):
     # db_images = db_client["listings"]["images"]
 
     #creates a listing with the given arguments, adds it to the database (and image if provided), then returns the listing.
-    def add(self, listing):
-        # imageId = None
-        # if image:
-        #     imageAddResult = self.db_add(self.db_images, image)
-        #     if imageAddResult:
-        #         imageId = imageAddResult["_id"]
-
-        # return self.db_add(self.db_listings, {
-        #     "poster": user,
-        #     "desc": listing_desc,
-        #     "contact": contact_info,
-        #     "image": imageId
-        # })
-        resp = self.listings.insert_one(listing)
-        return resp
+    # def add(self, listing):
+    #     resp = self.listings.insert_one(listing)
+    #     return resp
 
     #deletes the listing from the database and its corresponding image (if applicable)
-    def remove(self, listing):
-        imageId = listing["image"]
-        if imageId:
-            self.db_delete(self.db_images, imageId)
-        self.db_remove(self.db_listings, listing)
-        return
-
+    # def remove(self, listing):
+    #     imageId = listing["image"]
+    #     if imageId:
+    #         self.db_delete(self.db_images, imageId)
+    #     self.db_remove(self.db_listings, listing)
+    #     return
 
     # Functions for searching by filters:
-    def find_by_categories(self, categories):
-        filtered_listings = list(self.listings.find({"categories": {"$in": categories}}))
+
+    def find_all(self):
+        all_listings = self.listings.find()
+        for listing in all_listings:
+            listing["_id"] = str(listing["_id"])
+        return all_listings
+        
+    # def find_by_categories(self, categories):
+    #     filtered_listings = list(self.listings.find({"categories": {"$in": categories}}))
+    #     return filtered_listings
+
+    def find_by_category(self, category):
+        filtered_listings = list(self.listings.find({"category":  category}))
+        for listing in filtered_listings:
+            listing["_id"] = str(listing["_id"])
         return filtered_listings
     
     def find_by_seller(self, seller):
         filtered_listings = list(self.listings.find({"seller": seller}))
+        for listing in filtered_listings:
+            listing["_id"] = str(listing["_id"])
         return filtered_listings
 
     def find_by_city(self, city):
         filtered_listings = list(self.listings.find({"location": {"city": city}}))
+        for listing in filtered_listings:
+            listing["_id"] = str(listing["_id"])
         return filtered_listings
 
     def find_by_state(self, state):
         filtered_listings = list(self.listings.find({"location": {"state": state}}))
+        for listing in filtered_listings:
+            listing["_id"] = str(listing["_id"])
         return filtered_listings
 
     def find_by_zip_code(self, zip_code):
-        filtered_listings = list(self.listings.find({"location": {"zip_code": zip_code}}))
+        filtered_listings = list(self.listings.find({"location": {"zip": zip_code}}))
+        for listing in filtered_listings:
+            listing["_id"] = str(listing["_id"])
         return filtered_listings
+
+    # def show_listings(self, filtered_listings, time_start, posts_per_page):
+    #     show_listings = self.find

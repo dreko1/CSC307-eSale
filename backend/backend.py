@@ -20,47 +20,62 @@ CORS(app)
 # database = Model()
 
 @app.errorhandler(404)
-def page_not_found(e):
+def page_not_found():
     return "<h1>404</h1><p>Page Not Found.</p>", 404
 
-
-@app.route('/')
-def index():
-    return redirect(url_for('login'))
-
-# this method will need to be called by the method the queries the database
-def validate_password(pw, db_pw, db_salt):
-    hashed_password = bcrypt.hashpw(pw, db_salt)
-    return bcrypt.checkpw(hashed_password, db_pw)
+# @app.route('/')
+# def index():
+#     return redirect(url_for('login'))
 
 
-@app.route('/register', methods=['POST'])
+@app.route('/signup', methods=['POST'])
 def register():  
     if request.method == 'POST':
         new_user = request.get_json()
-        if new_user['username'] and new_user['password']: # Check that all required fields were entered
-            if User.get(new_user): # Check if user exists
+        print("\n" ,new_user, "\n")
+
+        # Check that all required fields were entered
+        if new_user['username'] and new_user['password']:
+            if User().get(new_user['username']): # Check if user exists
                 # flash('This Username already exists!')
-                return jsonify({'error': 'This Username already exists!'})
-            password = new_user['password']
+                print("HERE")
+                return jsonify({'error': 'This Username already exists!'}), 409
             pw_salt = bcrypt.gensalt()
-            new_user['password'] = bcrypt.hashpw(password, pw_salt)
-            User.add(new_user)
-            check = User.get_user(new_user)
-            if check:
-                return check
+            encrypted_password = bcrypt.hashpw(new_user['password'].encode('utf8'), pw_salt)
+            user_to_add = {
+                'username': new_user['username'],
+                'password': encrypted_password,
+                'salt': pw_salt,
+                'email': new_user['email'],
+                'likes': list(),
+                'address': dict(),
+            }
+            user_to_add = User(user_to_add)
+            user_to_add.save()
+            return jsonify(new_user), 201
+
+
+# this method will need to be called by the method the queries the database
+def validate_password(pw, db_pw, db_salt):
+    return bcrypt.checkpw(pw.encode('utf8'), db_pw)
 
 
 @app.route('/login', methods=['POST'])
 def login():
-    requestData = request.get_json()
-    username = requestData['username']
-    password = requestData['password']
-    print(requestData)
-    if username and password:
-        user = User.get(username)
-        if user and validate_password(password, user["password"], user["salt"]):
-            return user
+    if request.method == 'POST':
+        requestData = request.get_json()
+        username = requestData['username']
+        password = requestData['password']
+        print(requestData)
+        if username and password:
+            user = User().get(username)
+            print(user)
+            if not user:
+                return jsonify({'error': 'This Username does not exist!'}), 404
+            elif validate_password(password, user["password"], user["salt"]):
+                return jsonify(success=True), 201
+            else:
+                return jsonify({"error": "This password is incorrect"}), 403
 
 
 @app.route('/post', methods=['POST'])
@@ -73,7 +88,7 @@ def post_listing():
 
 @app.route('/profile/<username>', methods=['GET', 'POST', 'DELETE'])
 def get_profile(username):
-    # Not sure if any of this is right
+    # Not sure if any of this is correct
     if request.method == 'GET':  # Get users likes
         get_likes = request.args.get('likes')
         if get_likes:
@@ -97,7 +112,7 @@ def get_profile(username):
 @app.route('/profile/<username>/likes', methods=['GET', 'POST'])
 def get_likes(username):
     if request.method == 'GET': # Get users likes
-        likes = User.get_likes(username)
-        return likes
-    elif request.method == 'POST': # Have a button for adding new likes?
+        likes = User().get_likes(username)
+        return jsonify(likes), 201
+    elif request.method == 'POST': # Have an option for adding new likes?
         pass
