@@ -3,12 +3,20 @@ import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import AllInclusiveIcon from '@material-ui/icons/AllInclusive';
+import DriveEtaIcon from '@material-ui/icons/DriveEta';
+import DirectionsBikeIcon from '@material-ui/icons/DirectionsBike';
+import DirectionsBoatIcon from '@material-ui/icons/DirectionsBoat';
+import ComputerIcon from '@material-ui/icons/Computer';
+import HomeIcon from '@material-ui/icons/Home';
+import MusicNoteIcon from '@material-ui/icons/MusicNote';
+import SportsIcon from '@material-ui/icons/Sports';
+import BuildIcon from '@material-ui/icons/Build';
+import ToysIcon from '@material-ui/icons/Toys';
+import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
 
 const drawerWidth = 240;
 
@@ -39,20 +47,49 @@ export default function Sidebar() {
         <Toolbar />
         <div className={classes.drawerContainer}>
           <List>
-            <ListItem button key={"First Thing"}>
-              <ListItemIcon><MailIcon /></ListItemIcon>
-              <ListItemText primary={"First Thing"} />
+            <ListItem button key={"All"}>
+              <ListItemIcon><AllInclusiveIcon /></ListItemIcon>
+              <ListItemText primary={"All"} />
             </ListItem>
-            <ListItem button key={"Second Thing"}>
-              <ListItemIcon><MailIcon /></ListItemIcon>
-              <ListItemText primary={"Second Thing"} />
+            <ListItem button key={"Auto"}>
+              <ListItemIcon><DriveEtaIcon /></ListItemIcon>
+              <ListItemText primary={"Auto"} />
             </ListItem>
-          </List>
-          <Divider />
-          <List>
-            <ListItem button key={"Third Thing"}>
-              <ListItemIcon><InboxIcon /></ListItemIcon>
-              <ListItemText primary={"Third Thing"} />
+            <ListItem button key={"Bikes"}>
+              <ListItemIcon><DirectionsBikeIcon /></ListItemIcon>
+              <ListItemText primary={"Bikes"} />
+            </ListItem>
+            <ListItem button key={"Boats"}>
+              <ListItemIcon><DirectionsBoatIcon /></ListItemIcon>
+              <ListItemText primary={"Boats"} />
+            </ListItem>
+            <ListItem button key={"Computers"}>
+              <ListItemIcon><ComputerIcon /></ListItemIcon>
+              <ListItemText primary={"Computers"} />
+            </ListItem>
+            <ListItem button key={"Household Items"}>
+              <ListItemIcon><HomeIcon /></ListItemIcon>
+              <ListItemText primary={"Household Items"} />
+            </ListItem>
+            <ListItem button key={"Music"}>
+              <ListItemIcon><MusicNoteIcon /></ListItemIcon>
+              <ListItemText primary={"Music"} />
+            </ListItem>
+            <ListItem button key={"Sports"}>
+              <ListItemIcon><SportsIcon /></ListItemIcon>
+              <ListItemText primary={"Sports"} />
+            </ListItem>
+            <ListItem button key={"Tools"}>
+              <ListItemIcon><BuildIcon /></ListItemIcon>
+              <ListItemText primary={"Tools"} />
+            </ListItem>
+            <ListItem button key={"Toys"}>
+              <ListItemIcon><ToysIcon /></ListItemIcon>
+              <ListItemText primary={"Toys"} />
+            </ListItem>
+            <ListItem button key={"Video Games"}>
+              <ListItemIcon><SportsEsportsIcon /></ListItemIcon>
+              <ListItemText primary={"Video Games"} />
             </ListItem>
           </List>
         </div>
