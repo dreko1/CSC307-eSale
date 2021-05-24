@@ -61,7 +61,7 @@ export default function CreatePost(props){
 
   return (
       <div>
-      <Button variant="contained" size="large" color="primary" className={classes.margin} onClick={handleClickOpen}>
+      <Button variant="contained" size="large" color="secondary" className={classes.margin} onClick={handleClickOpen}>
         Create Post
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="lg" fullWidth={true}>
