@@ -3,6 +3,13 @@ from wtforms.fields.core import BooleanField
 import bcrypt
 from bson.objectid import ObjectId
 from flask import Flask, request, flash, jsonify, redirect, url_for
+from flask_login import (
+    LoginManager,
+    current_user,
+    login_required,
+    login_user,
+    logout_user
+)
 from datetime import datetime
 import json
 
@@ -93,6 +100,9 @@ def post_listing():
         print(user)
         if not validate_password(listing_to_add["password"], user["password"]):
             return jsonify({"error": "Invalid user credentials"}), 403
+        
+        
+
         listing_to_add = {
             'seller': user['username'],
             'title': listing_to_add['title'],
@@ -106,7 +116,7 @@ def post_listing():
                 'city': listing_to_add['city'],
                 'zip_code': listing_to_add['zip_code']
             },
-            'time_posted': datetime.now().time().strftime("%m/%d/%Y, %H:%M:%S")
+            'time_posted': datetime.today().strftime("%m-%d-%Y, %H:%M:%S")
             # 'timestamp': {
             #     'date': datetime.now().time().strftime("%m/%d/%Y")            
             #     'time': datetime.now().time().strftime("%H:%M:%S")
