@@ -3,6 +3,7 @@ from wtforms.fields.core import BooleanField
 import bcrypt
 from bson.objectid import ObjectId
 from flask import Flask, request, flash, jsonify, redirect, url_for
+from datetime import datetime
 import json
 
 # for linking frontend-backend
@@ -46,6 +47,7 @@ def register():
                 'username': new_user['username'],
                 'password': encrypted_password,
                 'email': new_user['email'],
+                'posts': list(),
                 'likes': list(),
                 'address': dict(),
             }
@@ -86,24 +88,34 @@ def logout():
 def post_listing():
     if request.method == 'POST':
         listing_to_add = request.get_json()
+        print(listing_to_add)
+        user = User().get(listing_to_add["username"])
+        print(user)
+        if not validate_password(listing_to_add["password"], user["password"]):
+            return jsonify({"error": "Invalid user credentials"}), 403
         listing_to_add = {
-            'seller': listing_to_add['seller'],
+            'seller': user['username'],
+            'title': listing_to_add['title'],
             'price': listing_to_add['price'],
             'description': listing_to_add['description'],
+            'category': listing_to_add['category'],
             'contact': listing_to_add['contact'],
             'image': listing_to_add['image'],
             'location': {
                 'state':  listing_to_add['state'],
+                'city': listing_to_add['city'],
                 'zip_code': listing_to_add['zip_code']
             },
-            'timestamp': {
-                'time': listing_to_add['time'],
-                'date': listing_to_add['date']
-            }
+            'time_posted': datetime.now().time().strftime("%m/%d/%Y, %H:%M:%S")
+            # 'timestamp': {
+            #     'date': datetime.now().time().strftime("%m/%d/%Y")            
+            #     'time': datetime.now().time().strftime("%H:%M:%S")
+            # }
         }
         listing = Listing(listing_to_add)
         listing.save()
-        return jsonify(listing), 201
+        #user['posts'].add(listing["_id"])
+        return jsonify(success=True), 201
 
 
 @app.route('/post/<id>', methods=['POST', 'DELETE'])

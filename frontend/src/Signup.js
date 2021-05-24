@@ -66,6 +66,7 @@ function Signup(props) {
                 if(response.status==201){
                     console.log("signup request succeded");
                     console.log(response);
+                    props.onSuccess(user.username, user.password);
                     //send the username and password to the app to auto-login and hide the sign-in form.
                 }else{
                     console.log("signup request failed");
@@ -80,7 +81,7 @@ function Signup(props) {
         <div>
             <h1>Sign Up</h1>
             <form>
-                <div class="container">
+                <div className="container">
                     <TextField 
                         helperText="Choose Username" 
                         onChange={(event) => updateProperty("username", event.target.value)}
@@ -113,7 +114,7 @@ function Signup(props) {
                         title={user.emailError}
                     required/>
                     <br/><br/>
-                    <Button variant="contained" onClick={submitForm}>Login</Button>
+                    <Button variant="contained" onClick={submitForm}>Sign up</Button>
                     <br/>
                     <br/>
                 </div> 

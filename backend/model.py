@@ -1,4 +1,4 @@
-from pymongo import MongoClient
+from pymongo import MongoClient, collection
 from re import L
 from bson import ObjectId
 import os
@@ -105,6 +105,7 @@ class User(Model):
             password: str
             salt: str
             email: str
+            posts: list['listing_id']
             likes: list['listing_id']
             address: dict()
         }
@@ -174,13 +175,14 @@ class Listing(Model):
     MONGODB_URI = os.environ['MONGODB_URI']
     
     db_client = MongoClient(MONGODB_URI)
-    listings = db_client["listings"]["listings_list"]
+    listings = db_client["listings"]["listings"]
+    collection = listings
     # db_images = db_client["listings"]["images"]
 
     #creates a listing with the given arguments, adds it to the database (and image if provided), then returns the listing.
-    # def add(self, listing):
-    #     resp = self.listings.insert_one(listing)
-    #     return resp
+    def add(self, listing):
+        resp = self.listings.insert_one(listing)
+        return resp.inserted_id
 
     #deletes the listing from the database and its corresponding image (if applicable)
     # def remove(self, listing):

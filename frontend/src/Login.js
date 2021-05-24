@@ -42,6 +42,7 @@ function Login(props) {
             if(response.status==201){
                 console.log("login request succeded");
                 console.log(response);
+                props.onSuccess(user.username, user.password);
             }else{
                 console.log("login request failed");
                 //TODO tell user why it failed. wrong password, non-existant username, etc.
@@ -54,7 +55,7 @@ function Login(props) {
         <div>
             <h1>Login</h1>
             <form>
-                <div class="container">
+                <div>
                     <TextField 
                         helperText="Username" 
                         onChange={(event) => updateProperty("username", event.target.value)} // <- This line and the following one are how we will handle use states.
