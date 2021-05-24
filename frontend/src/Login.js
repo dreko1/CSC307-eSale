@@ -3,7 +3,6 @@ import {Button, TextField, Container} from '@material-ui/core';
 import {useState} from 'react'
 import makePostCall from './axiosMethods'
 import './App.css';
-import ReactDOM from 'react-dom'
 
 //We also need a SignUp element written similarly (with more info of course).
 //This function returns the html element that is a login box.
@@ -73,6 +72,7 @@ function Login(props) {
                     required/>
                     <br/><br/>
                     <Button variant="contained" onClick={submitForm}>Login</Button>
+                    <br/>
                     <br/>
                 </div> 
             </form>
