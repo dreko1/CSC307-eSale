@@ -4,6 +4,7 @@ import Content from './Content';
 import Sidebar from './Sidebar'
 import SignIn from './Signin'
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { useState } from 'react';
 
 //I do not know how to present different html based on whether you are on the main page or some sub-page.
 //Right now it just renders the main page (which only has <Login> at the moment)
@@ -12,15 +13,19 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 //You can add <MainPage /> somewhere inside of the App div.
 
 
+
 function App() {
+
+    var credentials = {username: "",password: ""}
+
     //I just put some random lorem ipsum text in there to make sure the sign in works. Remove it if you want.
     return (
     <div className="App" style={{display:'flex'}}>
         <CssBaseline />
-        <SignIn />
+        <SignIn onSuccess={(u,p) =>{ credentials = {username: u, password: p}; console.log(credentials)}}/>
         <Header />
         <Sidebar />
-        <Content />
+        <Content getCredentials={()=>credentials}/>
     </div>
     );
 }

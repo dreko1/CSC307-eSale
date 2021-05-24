@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     height: '100%'
   },
 }));
-export default function CreatePost(){
+export default function CreatePost(props){
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [state, setState] = React.useState({
@@ -38,11 +38,15 @@ export default function CreatePost(){
   };
 
   const handleSubmit = async () => {
+    const credentials = props.getCredentials();
     const listing = {
+      username: credentials.username,
+      password: credentials.password,
       name: state.name,
       description: state.description,
       contact: state.contact
     }
+    console.log(listing);
     makePostCall('/post', listing).then(response => {
         if(response.status==201){
             console.log("new posting request succeded");

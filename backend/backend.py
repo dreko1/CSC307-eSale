@@ -2,6 +2,7 @@ from wtforms.fields.core import BooleanField
 import bcrypt
 from bson.objectid import ObjectId
 from flask import Flask, request, flash, jsonify, redirect, url_for
+from datetime import datetime
 import json
 
 # for linking frontend-backend
@@ -47,6 +48,7 @@ def register():
                 'password': encrypted_password,
                 'salt': pw_salt,
                 'email': new_user['email'],
+                'posts': list(),
                 'likes': list(),
                 'address': dict(),
             }
@@ -81,9 +83,32 @@ def login():
 @app.route('/post', methods=['POST'])
 def post_listing():
     if request.method == 'POST':
-        listing = request.get_json()
-        resp = Listing.add(listing)
-        return resp
+        requestJson = request.get_json()
+        print(requestJson)
+        user = User().get(requestJson["username"])
+        print(user)
+        if not validate_password(requestJson["password"], user["password"], user["salt"]):
+            return jsonify({"error": "Invalid user credentials"}), 403
+        listing = {
+            "price": 0,
+            "name": requestJson["name"],
+            "description": requestJson["description"],
+            "categories": "",
+            "seller": user["username"],
+            "contact": requestJson["contact"],
+            "location": {
+                "state": "CA",
+                "zip": "93410"
+            },
+            "time_posted": datetime.now().time().strftime("%m/%d/%Y, %H:%M:%S")
+        }
+        listing = Listing(listing)
+        listing.save()
+        #user['posts'].add(listing)
+        return jsonify(success=True), 201
+    else:
+        return jsonify(success=False), 404
+
 
 
 @app.route('/profile/<username>', methods=['GET', 'POST', 'DELETE'])

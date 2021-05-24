@@ -21,7 +21,10 @@ function SignIn(props) {
         setSignupFormHidden(!signupFormHidden);
         setLoginFormHidden(true);
     }
-    
+    function success(username, password){
+        setIsOpen(false);
+        props.onSuccess(username, password);
+    }
     return (
         <Popover
             open={isOpen}
@@ -39,8 +42,8 @@ function SignIn(props) {
                 <Button style={{margin: "10px 10px 10px 0px"}} variant="contained" onClick={() => showSignUp()}>Sign Up</Button>
                 <Button style={{margin: "10px 10px 10px 0px"}} variant="contained" onClick={() => setIsOpen(false)}>Continue As Guest</Button>
             </div>
-            <div hidden={loginFormHidden}><Login/></div>
-            <div hidden={signupFormHidden}><Signup/></div>
+            <div hidden={loginFormHidden}><Login onSuccess={success}/></div>
+            <div hidden={signupFormHidden}><Signup onSuccess={success}/></div>
         </Popover>
     );
 }
