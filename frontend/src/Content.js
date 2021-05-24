@@ -1,7 +1,9 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { Button } from '@material-ui/core'
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import CreatePost from './createPost';
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -39,6 +41,7 @@ export default function Content() {
         nibh sit. Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra maecenas
         accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices sagittis orci a.
     </Typography>
+    {CreatePost()}
     </main>
   );
 }
