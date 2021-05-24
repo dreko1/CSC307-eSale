@@ -9,21 +9,26 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
   },
+  toolbarButtons: {
+    marginLeft: 'auto',
+  },
 }));
 
 export default function ButtonAppBar() {
   const classes = useStyles();
   
   return (
-    <div>
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-          <Typography variant="h6">
-            eSale
+          <Typography type="title" color="inherit">
+            <b>
+              eSale
+            </b>
           </Typography>
-          <Button color="inherit">Account</Button>
+          <div className={classes.toolbarButtons}>
+            <Button variant="contained" size="large" color="secondary">Account</Button>
+          </div>
         </Toolbar>
       </AppBar>
-    </div>
   );
 }
