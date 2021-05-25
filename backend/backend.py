@@ -1,7 +1,15 @@
+from dotenv import load_ipython_extension
 from wtforms.fields.core import BooleanField
 import bcrypt
 from bson.objectid import ObjectId
 from flask import Flask, request, flash, jsonify, redirect, url_for
+from flask_login import (
+    LoginManager,
+    current_user,
+    login_required,
+    login_user,
+    logout_user
+)
 from datetime import datetime
 import json
 
@@ -18,15 +26,14 @@ app = Flask(__name__)
 # Here we'll allow requests coming from any domain. Not recommended for production environment.
 CORS(app)
 
-# database = Model()
 
 @app.errorhandler(404)
 def page_not_found():
     return "<h1>404</h1><p>Page Not Found.</p>", 404
 
-# @app.route('/')
-# def index():
-#     return redirect(url_for('login'))
+@app.route('/')
+def index():
+    return redirect(url_for('login'))
 
 
 @app.route('/signup', methods=['POST'])
@@ -46,7 +53,6 @@ def register():
             user_to_add = {
                 'username': new_user['username'],
                 'password': encrypted_password,
-                'salt': pw_salt,
                 'email': new_user['email'],
                 'posts': list(),
                 'likes': list(),
@@ -58,7 +64,7 @@ def register():
 
 
 # this method will need to be called by the method the queries the database
-def validate_password(pw, db_pw, db_salt):
+def validate_password(pw, db_pw):
     return bcrypt.checkpw(pw.encode('utf8'), db_pw)
 
 
@@ -74,43 +80,63 @@ def login():
             print(user)
             if not user:
                 return jsonify({'error': 'This Username does not exist!'}), 404
-            elif validate_password(password, user["password"], user["salt"]):
+            elif validate_password(password, user["password"]):
                 return jsonify(success=True), 201
             else:
                 return jsonify({"error": "This password is incorrect"}), 403
 
 
+@app.route('/logout')
+def logout():
+    pass
+
+
 @app.route('/post', methods=['POST'])
 def post_listing():
     if request.method == 'POST':
-        requestJson = request.get_json()
-        print(requestJson)
-        user = User().get(requestJson["username"])
+        listing_to_add = request.get_json()
+        print(listing_to_add)
+        user = User().get(listing_to_add["username"])
         print(user)
-        if not validate_password(requestJson["password"], user["password"], user["salt"]):
+        if not validate_password(listing_to_add["password"], user["password"]):
             return jsonify({"error": "Invalid user credentials"}), 403
-        listing = {
-            "price": 0,
-            "name": requestJson["name"],
-            "description": requestJson["description"],
-            "categories": "",
-            "seller": user["username"],
-            "contact": requestJson["contact"],
-            "location": {
-                "state": "CA",
-                "zip": "93410"
-            },
-            "time_posted": datetime.now().time().strftime("%m/%d/%Y, %H:%M:%S"),
-            "image": requestJson["image"]
-        }
-        print(listing)
-        listing = Listing(listing)
-        listing.save()
-        #user['posts'].add(listing)
-        return jsonify(success=True), 201
-    else:
-        return jsonify(success=False), 404
+        
+        
 
+        listing_to_add = {
+            'seller': user['username'],
+            'title': listing_to_add['title'],
+            'price': listing_to_add['price'],
+            'description': listing_to_add['description'],
+            'category': listing_to_add['category'],
+            'contact': listing_to_add['contact'],
+            'image': listing_to_add['image'],
+            'location': {
+                'state':  listing_to_add['state'],
+                'city': listing_to_add['city'],
+                'zip_code': listing_to_add['zip_code']
+            },
+            'time_posted': datetime.today().strftime("%m-%d-%Y, %H:%M:%S"),
+            # 'timestamp': {
+            #     'date': datetime.now().time().strftime("%m/%d/%Y")            
+            #     'time': datetime.now().time().strftime("%H:%M:%S")
+            # }
+            "image": listing_to_add["image"]
+        }
+        listing = Listing(listing_to_add)
+        listing.save()
+        #user['posts'].add(listing["_id"])
+        return jsonify(success=True), 201
+
+
+@app.route('/post/<id>', methods=['POST', 'DELETE'])
+def edit_listing(id):
+    if request.method == 'POST': # Editing a listing
+        listing = Listing({'_id': id})
+        if listing.reload():
+            listing
+    elif request.method == 'DELETE': # Deleting a listing
+        listing = Listing({'_id': id})
 
 
 @app.route('/profile/<username>', methods=['GET', 'POST', 'DELETE'])
@@ -129,8 +155,7 @@ def get_profile(username):
         user = User({'Username': username})
         if user.reload(): # If user exists: (if this is ever false we have a problem)
             user.remove()
-            resp = jsonify(success=True)
-            resp.status_code = 204
+            resp = jsonify(success=True), 204
             return resp
         else:
             return jsonify({"error": "Could not find account in database"}), 404
@@ -143,3 +168,13 @@ def get_likes(username):
         return jsonify(likes), 201
     elif request.method == 'POST': # Have an option for adding new likes?
         pass
+
+
+@app.route('/browse/<category>/<page>', methods=['GET', 'POST'])
+def browse(category, page):
+    if request.method == 'GET':  # Get users likes
+        pass
+
+    elif request.method == 'POST': # Have an option for adding new likes?
+        pass
+
