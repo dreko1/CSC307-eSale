@@ -7,6 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import makePostCall from './axiosMethods'
+import { Input } from '@material-ui/core';
 import './App.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -23,6 +24,18 @@ export default function CreatePost(props){
     description: "",
     contact: ""
   });
+  const [imageFile, setImageFile] = React.useState("");
+
+  var reader = new FileReader();
+  reader.onloadend = ()=>{setImageFile(reader.result)}
+
+  function uploadImageFile(e){
+    if (e.target && e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+    }else{
+      setImageFile(null);
+    }
+  }
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -39,14 +52,17 @@ export default function CreatePost(props){
 
   const handleSubmit = async () => {
     const credentials = props.getCredentials();
+  
     const listing = {
       username: credentials.username,
       password: credentials.password,
       name: state.name,
       description: state.description,
-      contact: state.contact
+      contact: state.contact,
+      image: imageFile
     }
     console.log(listing);
+    
     makePostCall('/post', listing).then(response => {
         if(response.status==201){
             console.log("new posting request succeded");
@@ -116,6 +132,10 @@ export default function CreatePost(props){
             multiline={true}
             rows="2"
           />
+        </DialogContent>
+          <DialogContentText>Upload Image</DialogContentText>
+          <Input type="file" name="myImage" onChange={uploadImageFile}/>
+        <DialogContent>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">

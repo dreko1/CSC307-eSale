@@ -100,8 +100,10 @@ def post_listing():
                 "state": "CA",
                 "zip": "93410"
             },
-            "time_posted": datetime.now().time().strftime("%m/%d/%Y, %H:%M:%S")
+            "time_posted": datetime.now().time().strftime("%m/%d/%Y, %H:%M:%S"),
+            "image": requestJson["image"]
         }
+        print(listing)
         listing = Listing(listing)
         listing.save()
         #user['posts'].add(listing)
