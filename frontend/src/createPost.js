@@ -20,7 +20,7 @@ export default function CreatePost(props){
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [state, setState] = React.useState({
-    name: "",
+    title: "",
     description: "",
     contact: ""
   });
@@ -52,13 +52,18 @@ export default function CreatePost(props){
 
   const handleSubmit = async () => {
     const credentials = props.getCredentials();
-  
+    //should contain: username, password, title, price, description, category, contact, city, state, zip, image.
     const listing = {
       username: credentials.username,
       password: credentials.password,
-      name: state.name,
+      title: state.title,
+      price: 1,
       description: state.description,
+      category: "no category",
       contact: state.contact,
+      city: "no city provided",
+      state: "no state provided",
+      zip: "no zip provided",
       image: imageFile
     }
     console.log(listing);
@@ -89,10 +94,10 @@ export default function CreatePost(props){
             autoFocus
             margin="dense"
             label="Item Name" 
-            value={state.name} 
+            value={state.title} 
             onChange={handleChange}
             inputProps={{ 
-            name: 'name',
+            name: 'title',
             }}
             required
             size="medium"
