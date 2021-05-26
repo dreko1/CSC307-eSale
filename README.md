@@ -12,6 +12,7 @@ Material UI is used, see their website for installation instructions. https://ma
 
 Travis CI is used to host the files (https://travis-ci.com/github/dreko1/CSC307-eSale). 
 
+
 Version of npm: 6.14.12
 
 Version of Flask: 1.1.2
