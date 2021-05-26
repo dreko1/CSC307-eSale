@@ -36,6 +36,14 @@ class Model(dict):
             self.clear()
             return resp
     
+    def update(self, updated_fields):
+        if self._id:
+            resp = self.collection.update_one({"_id": ObjectId(self._id)},
+                {"$set": updated_fields}
+            )
+            self._id = str(self._id)
+            return resp
+
     # #removes the database document with the corresponding id.
     # def db_delete(self, collection, item_id):
     #     result = collection.delete_one({"_id": item_id})
@@ -177,6 +185,7 @@ class Listing(Model):
     db_client = MongoClient(MONGODB_URI)
     listings = db_client["listings"]["listings"]
     collection = listings
+
     # db_images = db_client["listings"]["images"]
 
     #creates a listing with the given arguments, adds it to the database (and image if provided), then returns the listing.
@@ -192,20 +201,28 @@ class Listing(Model):
     #     self.db_remove(self.db_listings, listing)
     #     return
 
+    # ====================================
     # Functions for searching by filters:
+    # ====================================
+    def find_all(self, sort_param):
+        if sort_param:
+            all_listings = self.listings.find().sort({sort_param})
+        else:
+            # default to sorting listings by time posted in descending order
+            all_listings = self.listings.find().sort({"time_posted": -1})
 
-    def find_all(self):
-        all_listings = self.listings.find()
         for listing in all_listings:
             listing["_id"] = str(listing["_id"])
         return all_listings
         
-    # def find_by_categories(self, categories):
-    #     filtered_listings = list(self.listings.find({"categories": {"$in": categories}}))
-    #     return filtered_listings
+    def find_by_category(self, category, sort_param):
+        if sort_param:
+            filtered_listings = list(self.listings.find(
+                {"category":  category})).sort({sort_param})
+        else:
+            filtered_listings = list(self.listings.find(
+                {"category":  category})).sort({"time_posted": -1})
 
-    def find_by_category(self, category):
-        filtered_listings = list(self.listings.find({"category":  category}))
         for listing in filtered_listings:
             listing["_id"] = str(listing["_id"])
         return filtered_listings
@@ -234,5 +251,21 @@ class Listing(Model):
             listing["_id"] = str(listing["_id"])
         return filtered_listings
 
-    # def show_listings(self, filtered_listings, time_start, posts_per_page):
-    #     show_listings = self.find
+    # def sort_by_title(self, reverse):
+    #     if reverse:
+    #         self.listings.find().sort({"title": -1})
+    #     else:
+    #         self.listings.find().sort({"title": 1})
+
+    # def sort_by_price(self, reverse):
+    #     if reverse:
+    #         self.listings.find().sort({"price": -1})
+    #     else:
+    #         self.listings.find().sort({"price": 1})
+
+    # def sort_by_time_posted(self, reverse):
+    #     if reverse:
+    #         self.listings.find().sort({"time_posted": -1})
+    #     else:
+    #         self.listings.find().sort({"time_posted": 1})
+

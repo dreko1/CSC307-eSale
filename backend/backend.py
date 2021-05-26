@@ -100,8 +100,7 @@ def post_listing():
         print(user)
         if not validate_password(listing_to_add["password"], user["password"]):
             return jsonify({"error": "Invalid user credentials"}), 403
-        
-        
+      
 
         listing_to_add = {
             'seller': user['username'],
@@ -118,7 +117,7 @@ def post_listing():
             },
             'time_posted': datetime.today().strftime("%m-%d-%Y, %H:%M:%S"),
             # 'timestamp': {
-            #     'date': datetime.now().time().strftime("%m/%d/%Y")            
+            #     'date': datetime.now().time().strftime("%m/%d/%Y")
             #     'time': datetime.now().time().strftime("%H:%M:%S")
             # }
             "image": listing_to_add["image"]
@@ -170,11 +169,15 @@ def get_likes(username):
         pass
 
 
-@app.route('/browse/<category>/<page>', methods=['GET', 'POST'])
-def browse(category, page):
+@app.route('/browse/<category>', methods=['GET'])
+def browse(category):
     if request.method == 'GET':  # Get users likes
-        pass
-
-    elif request.method == 'POST': # Have an option for adding new likes?
-        pass
+        # Note: 'sort_param' should be the string of the Listing parameter the user wishes to sort by
+        sort_param = request.args.get('sort_param') 
+        # filters = request.args.get('filters')
+        if category == 'all':
+            listings = Listing().find_all(sort_param)
+        else:
+            listings = Listing().find_by_category(category, sort_param)
+        return listings 
 
