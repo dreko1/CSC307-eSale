@@ -30,14 +30,14 @@ function Content(props) {
   return (
     <main className={classes.content}>
     <Toolbar />
-    <Card className={classes.root}>
+	    <Card className={classes.root}>
       <CardActionArea>
         <CardMedia
           component="img"
-          alt="Test"
-          height="140"
+          alt="Test Listing"
+          height="150"
           image={img}
-          title="Test"
+          title="Test Listing"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
