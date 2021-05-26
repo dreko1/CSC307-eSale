@@ -6,14 +6,9 @@ from dotenv import load_dotenv
 from pymongo import MongoClient
 import random
 
-load_dotenv()  # take environment variables from .env.
-MONGODB_URI = os.environ['MONGODB_URI']
 
-db_client = MongoClient(MONGODB_URI)
-
-if __name__=="__main__":
-    Listing.collection = db_client['test']['listings']
-    User.collection = db_client['test']['users']
+Listing.collection = Model.db_client['test']['listings']
+User.collection = Model.db_client['test']['users']
 
 def test_save():
     entry = Model({'test_save': 'saving'})
@@ -49,10 +44,11 @@ def test_update():
 def test_user_get_and_verify():
     defaultUser = User.get("default_username")
     alsoDefaultUser = User.get('default_username')
+    print(defaultUser)
+    print(alsoDefaultUser)
     assert defaultUser['_id'] == alsoDefaultUser['_id']
     #assert not defaultUser.verify_credentials("not_password")
     #assert defaultUser.verify_credentials("default_password")
-
 
 def test_user_get_likes():
     user = User.get("default_username")
