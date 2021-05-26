@@ -30,14 +30,33 @@ function Content(props) {
   return (
     <main className={classes.content}>
     <Toolbar />
-	    <Card className={classes.root}>
+    <Card className={classes.root}>
       <CardActionArea>
         <CardMedia
           component="img"
-          alt="Test Listing"
-          height="150"
+          alt="Test"
+          height="140"
           image={img}
-          title="Test Listing"
+          title="Test"
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+            Test Listing
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            Description
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+    </Card>
+	<Card className={classes.root}>
+      <CardActionArea>
+        <CardMedia
+          component="img"
+          alt="Test"
+          height="140"
+          image={img}
+          title="Test"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
