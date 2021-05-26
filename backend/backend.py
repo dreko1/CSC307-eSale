@@ -116,11 +116,12 @@ def post_listing():
                 'city': listing_to_add['city'],
                 'zip_code': listing_to_add['zip_code']
             },
-            'time_posted': datetime.today().strftime("%m-%d-%Y, %H:%M:%S")
+            'time_posted': datetime.today().strftime("%m-%d-%Y, %H:%M:%S"),
             # 'timestamp': {
             #     'date': datetime.now().time().strftime("%m/%d/%Y")            
             #     'time': datetime.now().time().strftime("%H:%M:%S")
             # }
+            "image": listing_to_add["image"]
         }
         listing = Listing(listing_to_add)
         listing.save()

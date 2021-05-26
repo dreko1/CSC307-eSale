@@ -1,4 +1,8 @@
 backend/.env
 backend/__pycache__
 backend/.idea
+<<<<<<< HEAD
 node_modules
+=======
+backend/venv
+>>>>>>> b1358ccdea16f08debe3e9f20862e3699a6606bc
