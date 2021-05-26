@@ -1,8 +1,9 @@
 asgiref==3.3.1
 astroid==2.4.2
-attrs==20.3.0
+bcrypt==3.2.0
 click==7.1.2
 coverage==5.5
+DateTime==4.3
 Django==3.1.6
 django-utils==0.0.2
 dnspython==1.16.0
@@ -33,3 +34,4 @@ sqlparse==0.4.1
 toml==0.10.2
 Werkzeug==1.0.1
 wrapt==1.12.1
+wtforms==2.3.3

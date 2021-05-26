@@ -15,3 +15,11 @@ Travis CI is used to host the files (https://travis-ci.com/github/dreko1/CSC307-
 Version of npm: 6.14.12
 
 Version of Flask: 1.1.2
+
+
+eSale for CSC 307
+
+
+[![Build Status](https://www.travis-ci.com/bklingen-calpoly/CSC307-flask-backend.svg?branch=main)](https://travis-ci.com/github/dreko1/CSC307-eSale)
+[![DeepSource](https://deepsource.io/gh/deepsourcelabs/good-first-issue.svg/?label=resolved+issues)](https://deepsource.io/gh/deepsourcelabs/good-first-issue/?ref=repository-badge)
+[![DeepSource](https://deepsource.io/gh/deepsourcelabs/good-first-issue.svg/?label=active+issues)](https://deepsource.io/gh/deepsourcelabs/good-first-issue/?ref=repository-badge)
