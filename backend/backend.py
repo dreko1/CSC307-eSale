@@ -1,7 +1,5 @@
 from dotenv import load_ipython_extension
-from wtforms.fields.core import BooleanField
 import bcrypt
-from bson.objectid import ObjectId
 from flask import Flask, request, flash, jsonify, redirect, url_for
 from flask_login import (
     LoginManager,
@@ -17,15 +15,24 @@ import json
 from flask_cors import CORS
 
 # For mongo database
+# we will need to store username, hashed password, and the salt used to hash in the database
 from model import User, Listing
 
-# we will need to store username, hashed password, and the salt used to hash in the database
 app = Flask(__name__)
-
 # CORS stands for Cross Origin Requests.
 # Here we'll allow requests coming from any domain. Not recommended for production environment.
 CORS(app)
 
+
+# Init Flask-Login
+login_manager = LoginManager()
+login_manager.login_view = 'login'
+login_manager.init_app(app)
+
+
+@login_manager.user_loader
+def load_user(username):
+    return User().get(username)
 
 @app.errorhandler(404)
 def page_not_found():
@@ -46,8 +53,10 @@ def register():
         if new_user['username'] and new_user['password']:
             if User().get(new_user['username']): # Check if user exists
                 # flash('This Username already exists!')
-                print("HERE")
                 return jsonify({'error': 'This Username already exists!'}), 409
+            if User().get(new_user['email']):  # Check if user exists
+                # flash('This email already exists!')
+                return jsonify({'error': 'An account with this email address already exists!'}), 409
             pw_salt = bcrypt.gensalt()
             encrypted_password = bcrypt.hashpw(new_user['password'].encode('utf8'), pw_salt)
             user_to_add = {
@@ -81,17 +90,21 @@ def login():
             if not user:
                 return jsonify({'error': 'This Username does not exist!'}), 404
             elif validate_password(password, user["password"]):
-                return jsonify(success=True), 201
+                login_user(user)
+                return jsonify({"message": "login success"}), 200
             else:
                 return jsonify({"error": "This password is incorrect"}), 403
 
 
 @app.route('/logout')
+@login_required
 def logout():
-    pass
+    logout_user()
+    return jsonify({"message": "logout success"}), 200
 
 
 @app.route('/post', methods=['POST'])
+@login_required
 def post_listing():
     if request.method == 'POST':
         listing_to_add = request.get_json()
@@ -101,7 +114,6 @@ def post_listing():
         if not validate_password(listing_to_add["password"], user["password"]):
             return jsonify({"error": "Invalid user credentials"}), 403
       
-
         listing_to_add = {
             'seller': user['username'],
             'title': listing_to_add['title'],
@@ -129,6 +141,7 @@ def post_listing():
 
 
 @app.route('/post/<id>', methods=['POST', 'DELETE'])
+@login_required
 def edit_listing(id):
     if request.method == 'POST': # Editing a listing
         listing = Listing({'_id': id})
@@ -139,6 +152,7 @@ def edit_listing(id):
 
 
 @app.route('/profile/<username>', methods=['GET', 'POST', 'DELETE'])
+@login_required
 def get_profile(username):
     # Not sure if any of this is correct
     if request.method == 'GET':  # Get users likes
@@ -161,6 +175,7 @@ def get_profile(username):
 
 
 @app.route('/profile/<username>/likes', methods=['GET', 'POST'])
+@login_required
 def get_likes(username):
     if request.method == 'GET': # Get users likes
         likes = User().get_likes(username)

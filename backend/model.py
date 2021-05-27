@@ -137,6 +137,9 @@ class User(Model):
     #     self._id = str(self._id)
     #     return resp
 
+    def is_authenticated(self):
+        return True
+        
     def get(self, username):
         user = self.collection.find_one({"username": username})
         return user

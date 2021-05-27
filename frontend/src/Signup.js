@@ -53,17 +53,17 @@ function Signup(props) {
     //This function checks password equivalence, makes a post call, then has to-be-implemented logic based off of the response.
     //TODO
     function submitForm(){
-        if(user.password!=user.password2){
+        if(user.password!==user.password2){
             return;
         }else if(user.password.length<6){
             return;
-        }else if(user.username==""){
+        }else if(user.username===""){
             updateProperty("usernameError", "Must provide a username");
         }else if(!user.email.includes("@")){
             return;
         }else{
             makePostCall('/signup', user).then(response => {
-                if(response.status==201){
+                if(response.status===201){
                     console.log("signup request succeded");
                     console.log(response);
                     props.onSuccess(user.username, user.password);
