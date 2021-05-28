@@ -94,10 +94,10 @@ export default function CreatePost(props){
               autoFocus
               margin="dense"
               label="Item Name" 
-              value={state.name} 
+              value={state.title} 
               onChange={handleChange}
               inputProps={{ 
-              name: 'name',
+              name: 'title',
               }}
               required
               size="medium"

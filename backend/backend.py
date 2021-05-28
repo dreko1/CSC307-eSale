@@ -83,10 +83,17 @@ def post_listing():
         req = request.get_json()
         #Check that all required arguments are provided in the request.
         if not (req['username'] and req['password']):
+            print("a")
             return jsonify({'error': 'Must provide username and password!'}), 409
         if not (req['title'] and req['price'] and req['description'] and req['category'] and req['contact']):
+            print(req['title'])
+            print(req['price'])
+            print(req['description'])
+            print(req['category'])
+            print(req['contact'])
             return jsonify({'error': 'Must provide title, price, description, category, and contact!'}), 409
         if not (req['city'] and req['state'] and req['zip']):
+            print("c")
             return jsonify({'error': 'Must provide city, state, and zip!'}), 409
         
         #Check that user exists and password is correct
