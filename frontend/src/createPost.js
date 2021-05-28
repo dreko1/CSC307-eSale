@@ -20,7 +20,7 @@ export default function CreatePost(props){
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const [state, setState] = React.useState({
-      name: "",
+      title: "",
       description: "",
       contact: ""
     });
@@ -35,7 +35,6 @@ export default function CreatePost(props){
       }else{
         setImageFile(null);
       }
-    }
   
     const handleChange = (event) => {
       const name = event.target.name;
@@ -53,14 +52,19 @@ export default function CreatePost(props){
     const handleSubmit = async () => {
       const credentials = props.getCredentials();
     
-      const listing = {
-        username: credentials.username,
-        password: credentials.password,
-        name: state.name,
-        description: state.description,
-        contact: state.contact,
-        image: imageFile
-      }
+   const listing = {
+      username: credentials.username,
+      password: credentials.password,
+      title: state.title,
+      price: 1,
+      description: state.description,
+      category: "no category",
+      contact: state.contact,
+      city: "no city provided",
+      state: "no state provided",
+      zip: "no zip provided",
+      image: imageFile
+    }
       console.log(listing);
       
       makePostCall('/post', listing).then(response => {

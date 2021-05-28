@@ -3,13 +3,13 @@ from wtforms.fields.core import BooleanField
 import bcrypt
 from bson.objectid import ObjectId
 from flask import Flask, request, flash, jsonify, redirect, url_for
-from flask_login import (
+'''from flask_login import (
     LoginManager,
     current_user,
     login_required,
     login_user,
     logout_user
-)
+)'''
 from datetime import datetime
 import json
 
@@ -29,114 +29,93 @@ CORS(app)
 
 @app.errorhandler(404)
 def page_not_found():
-    return "<h1>404</h1><p>Page Not Found.</p>", 404
+    return '<h1>404</h1><p>Page Not Found.</p>', 404
 
 @app.route('/')
 def index():
     return redirect(url_for('login'))
 
 
+#register should contain fields:
+# username, password, email
 @app.route('/signup', methods=['POST'])
 def register():  
     if request.method == 'POST':
-        new_user = request.get_json()
-        print("\n" ,new_user, "\n")
+        req = request.get_json()
 
         # Check that all required fields were entered
-        if new_user['username'] and new_user['password']:
-            if User().get(new_user['username']): # Check if user exists
-                # flash('This Username already exists!')
-                print("HERE")
-                return jsonify({'error': 'This Username already exists!'}), 409
-            pw_salt = bcrypt.gensalt()
-            encrypted_password = bcrypt.hashpw(new_user['password'].encode('utf8'), pw_salt)
-            user_to_add = {
-                'username': new_user['username'],
-                'password': encrypted_password,
-                'email': new_user['email'],
-                'posts': list(),
-                'likes': list(),
-                'address': dict(),
-            }
-            user_to_add = User(user_to_add)
-            user_to_add.save()
-            return jsonify(new_user), 201
+        if not (req['username'] and req['password'] and req['email']):
+            return jsonify({'error': 'Must provide username, password, and email!'}), 409
 
+        #Build user object (returns None if username is taken)
+        user = User.new_user(req['username'], req['password'], req['email'])
+        if user == None:
+            return jsonify({'error': 'This Username already exists!'}), 409
+        else:
+            return jsonify(success=True), 201
 
-# this method will need to be called by the method the queries the database
-def validate_password(pw, db_pw):
-    return bcrypt.checkpw(pw.encode('utf8'), db_pw)
-
-
+#login should contain fields:
+# username, password
 @app.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
-        requestData = request.get_json()
-        username = requestData['username']
-        password = requestData['password']
-        print(requestData)
-        if username and password:
-            user = User().get(username)
-            print(user)
-            if not user:
-                return jsonify({'error': 'This Username does not exist!'}), 404
-            elif validate_password(password, user["password"]):
-                return jsonify(success=True), 201
-            else:
-                return jsonify({"error": "This password is incorrect"}), 403
+        req = request.get_json()
 
+        #Check that all required arguments are provided in the request.
+        if not (req['username'] and req['password']):
+            return jsonify({'error': 'Must provide username and password!'}), 409
 
-@app.route('/logout')
-def logout():
-    pass
+        #Verify user existance, and password correctness.
+        user = User.get(req['username'])
+        if not user:
+            return jsonify({'error': 'This Username does not exist!'}), 404
+        elif user.verify_credentials(req['password']):
+            return jsonify(success=True), 201
+        else:
+            return jsonify({'error': 'This password is incorrect'}), 403
 
-
+# post should include fields for:
+# username, password, title, price, description, category, contact, city, state, zip, image.
 @app.route('/post', methods=['POST'])
 def post_listing():
     if request.method == 'POST':
-        listing_to_add = request.get_json()
-        print(listing_to_add)
-        user = User().get(listing_to_add["username"])
-        print(user)
-        if not validate_password(listing_to_add["password"], user["password"]):
-            return jsonify({"error": "Invalid user credentials"}), 403
-      
+        req = request.get_json()
+        #Check that all required arguments are provided in the request.
+        if not (req['username'] and req['password']):
+            return jsonify({'error': 'Must provide username and password!'}), 409
+        if not (req['title'] and req['price'] and req['description'] and req['category'] and req['contact']):
+            return jsonify({'error': 'Must provide title, price, description, category, and contact!'}), 409
+        if not (req['city'] and req['state'] and req['zip']):
+            return jsonify({'error': 'Must provide city, state, and zip!'}), 409
+        
+        #Check that user exists and password is correct
+        user = User.get(req['username'])
+        if not user or not user.verify_credentials(req['password']):
+            return jsonify({'error': 'Invalid credentials'}), 404
 
-        listing_to_add = {
-            'seller': user['username'],
-            'title': listing_to_add['title'],
-            'price': listing_to_add['price'],
-            'description': listing_to_add['description'],
-            'category': listing_to_add['category'],
-            'contact': listing_to_add['contact'],
-            'image': listing_to_add['image'],
-            'location': {
-                'state':  listing_to_add['state'],
-                'city': listing_to_add['city'],
-                'zip_code': listing_to_add['zip_code']
-            },
-            'time_posted': datetime.today().strftime("%m-%d-%Y, %H:%M:%S"),
-            # 'timestamp': {
-            #     'date': datetime.now().time().strftime("%m/%d/%Y")
-            #     'time': datetime.now().time().strftime("%H:%M:%S")
-            # }
-            "image": listing_to_add["image"]
-        }
-        listing = Listing(listing_to_add)
-        listing.save()
-        #user['posts'].add(listing["_id"])
-        return jsonify(success=True), 201
+        #create the listing
+        listing = Listing.new_listing(user, req['title'], req['price'], req['description'], req['category'], req['contact'])
+        listing.set_location(req['city'], req['state'], req['zip'])
+        listing.set_image(req['image'])
+
+        #return the listing id
+        
+        return jsonify({"_id": str(listing['_id'])}), 201
 
 
 @app.route('/post/<id>', methods=['POST', 'DELETE'])
 def edit_listing(id):
+    # TODO
+    pass
+    '''
     if request.method == 'POST': # Editing a listing
+        
         listing = Listing({'_id': id})
         if listing.reload():
             listing
     elif request.method == 'DELETE': # Deleting a listing
         listing = Listing({'_id': id})
-
+        '''
 
 @app.route('/profile/<username>', methods=['GET', 'POST', 'DELETE'])
 def get_profile(username):
@@ -157,7 +136,7 @@ def get_profile(username):
             resp = jsonify(success=True), 204
             return resp
         else:
-            return jsonify({"error": "Could not find account in database"}), 404
+            return jsonify({'error': 'Could not find account in database'}), 404
 
 
 @app.route('/profile/<username>/likes', methods=['GET', 'POST'])
