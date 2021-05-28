@@ -20,7 +20,7 @@ export default function CreatePost(props){
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [state, setState] = React.useState({
-    name: "",
+    title: "",
     description: "",
     contact: ""
   });
@@ -52,13 +52,18 @@ export default function CreatePost(props){
 
   const handleSubmit = async () => {
     const credentials = props.getCredentials();
-  
+    //should contain: username, password, title, price, description, category, contact, city, state, zip, image.
     const listing = {
       username: credentials.username,
       password: credentials.password,
-      name: state.name,
+      title: state.title,
+      price: 1,
       description: state.description,
+      category: "no category",
       contact: state.contact,
+      city: "no city provided",
+      state: "no state provided",
+      zip: "no zip provided",
       image: imageFile
     }
     console.log(listing);
@@ -75,5 +80,77 @@ export default function CreatePost(props){
     setOpen(false);
   };
 
-  
+  return (
+      <div>
+      <Button variant="contained" size="large" color="secondary" className={classes.margin} onClick={handleClickOpen}>
+        Create Post
+      </Button>
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="lg" fullWidth={true}>
+        <DialogTitle id="form-dialog-title">Create Post</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Item Name" 
+            value={state.title} 
+            onChange={handleChange}
+            inputProps={{ 
+            name: 'title',
+            }}
+            required
+            size="medium"
+          />
+        </DialogContent>
+        <DialogContent>
+          <DialogContentText>
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Contact Information" 
+            value={state.contact} 
+            onChange={handleChange}
+            inputProps={{ 
+            name: 'contact',
+            }}
+            required
+            size="medium"
+          />
+        </DialogContent>
+
+
+        <DialogContent>
+          <DialogContentText>
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Item Description" 
+            value={state.description} 
+            onChange={handleChange}
+            inputProps={{ 
+              name: 'description',
+            }}
+            fullWidth
+            multiline={true}
+            rows="2"
+          />
+        </DialogContent>
+          <DialogContentText>Upload Image</DialogContentText>
+          <Input type="file" name="myImage" onChange={uploadImageFile}/>
+        <DialogContent>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleSubmit} color="primary">
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  )
 }
