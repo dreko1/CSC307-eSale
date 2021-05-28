@@ -2,6 +2,7 @@ from dotenv import load_ipython_extension
 from wtforms.fields.core import BooleanField
 import bcrypt
 from bson.objectid import ObjectId
+from bson.json_util import dumps
 from flask import Flask, request, flash, jsonify, redirect, url_for
 '''from flask_login import (
     LoginManager,
@@ -160,3 +161,10 @@ def browse(category):
             listings = Listing().find_by_category(category, sort_param)
         return listings 
 
+
+
+@app.route('/allposts', methods=['GET'])
+def allposts():
+    if request.method == 'GET':  # Get users likes
+        listings = dumps(list(Listing.collection.find({})))
+        return listings

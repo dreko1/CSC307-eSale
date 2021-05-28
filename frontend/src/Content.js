@@ -7,6 +7,7 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
+import {makeGetCall} from './axiosMethods';
 import img from './dreko.jpg';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,8 +25,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+
+
 function Content(props) {
   const classes = useStyles();
+
+  console.log(makeGetCall("/allposts"))
 
   return (
     <main className={classes.content}>

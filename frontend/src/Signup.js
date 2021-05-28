@@ -1,7 +1,7 @@
 import React from 'react'
 import {Button, TextField, Container, unstable_createMuiStrictModeTheme} from '@material-ui/core';
 import {useState} from 'react'
-import makePostCall from './axiosMethods'
+import {makePostCall} from './axiosMethods'
 import './App.css';
 
 

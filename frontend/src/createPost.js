@@ -6,7 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import makePostCall from './axiosMethods'
+import {makePostCall} from './axiosMethods'
 import { Input } from '@material-ui/core';
 import './App.css';
 
@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
     height: '100%'
   },
 }));
+
 export default function CreatePost(props){
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
@@ -35,7 +36,7 @@ export default function CreatePost(props){
       }else{
         setImageFile(null);
       }
-  
+    }
     const handleChange = (event) => {
       const name = event.target.name;
       setState({...state, [name]: event.target.value});
@@ -52,19 +53,19 @@ export default function CreatePost(props){
     const handleSubmit = async () => {
       const credentials = props.getCredentials();
     
-   const listing = {
-      username: credentials.username,
-      password: credentials.password,
-      title: state.title,
-      price: 1,
-      description: state.description,
-      category: "no category",
-      contact: state.contact,
-      city: "no city provided",
-      state: "no state provided",
-      zip: "no zip provided",
-      image: imageFile
-    }
+      const listing = {
+        username: credentials.username,
+        password: credentials.password,
+        title: state.title,
+        price: 1,
+        description: state.description,
+        category: "no category",
+        contact: state.contact,
+        city: "no city provided",
+        state: "no state provided",
+        zip: "no zip provided",
+        image: imageFile
+      }
       console.log(listing);
       
       makePostCall('/post', listing).then(response => {
@@ -151,5 +152,5 @@ export default function CreatePost(props){
           </DialogActions>
         </Dialog>
       </div>
-    )
+    );
 }
