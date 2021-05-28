@@ -1,7 +1,7 @@
 import React from 'react'
 import {Button, TextField, Container} from '@material-ui/core';
 import {useState} from 'react'
-import makePostCall from './axiosMethods'
+import {makePostCall} from './axiosMethods'
 import './App.css';
 
 //We also need a SignUp element written similarly (with more info of course).

@@ -4,7 +4,7 @@ import axios from 'axios';
 const serverPath = "http://localhost:5000"
 
 //This function concatenates the path paremeter with the server path, and makes a post call with the given data.
-async function makePostCall(path, data){
+export async function makePostCall(path, data){
     try {
         const response = await axios.post(serverPath+path, data);
         if(response.status<100){
@@ -24,7 +24,16 @@ async function makePostCall(path, data){
     }
     return false;
 }
+export async function makeGetCall(path){
+    try {
+        const response = await axios.get(serverPath+path).then((response) => {console.log(response)});
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+    return false;
+
+}
 //TODO: write methods for get, delete, post, and put.
 //Also, I dont know whether things are secure & encrypted but thats not worth looking into at this point.
 //  We can look into that later on if we get the time.
-export default makePostCall;
