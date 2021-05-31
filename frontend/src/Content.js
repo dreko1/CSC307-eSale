@@ -2,7 +2,6 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import CreatePost from './createPost';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
@@ -54,7 +53,6 @@ function Content(props) {
         </CardContent>
       </CardActionArea>
     </Card>
-    <CreatePost getCredentials={props.getCredentials}/>
     </main>
   );
 }

@@ -23,9 +23,9 @@ function App() {
     <div className="App" style={{display:'flex'}}>
         <CssBaseline />
         <SignIn onSuccess={(u,p) =>{ credentials = {username: u, password: p}; console.log(credentials)}}/>
-        <Header />
+        <Header getCredentials={()=>credentials}/>
         <Sidebar />
-        <Content getCredentials={()=>credentials}/>
+        <Content/>
     </div>
     );
 }
