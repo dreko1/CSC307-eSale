@@ -28,13 +28,13 @@ const useStyles = makeStyles((theme) => ({
 
 function Content(props) {
   const classes = useStyles();
-
-  console.log(makeGetCall("/allposts"))
-
-  return (
-    <main className={classes.content}>
-    <Toolbar />
-    <Card className={classes.root}>
+  
+  function buildPost(postData){
+    //look at the console to see that this function is called for each listing recieved from the server.
+    console.log(postData)
+    
+    return(
+      <Card className={classes.root}>
       <CardActionArea>
         <CardMedia
           component="img"
@@ -52,7 +52,14 @@ function Content(props) {
           </Typography>
         </CardContent>
       </CardActionArea>
-    </Card>
+      </Card>
+    )
+  }
+
+  return (
+    <main className={classes.content}>
+    <Toolbar />
+    {props.listings.map(buildPost)}
     </main>
   );
 }

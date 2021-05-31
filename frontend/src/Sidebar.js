@@ -17,6 +17,7 @@ import SportsIcon from '@material-ui/icons/Sports';
 import BuildIcon from '@material-ui/icons/Build';
 import ToysIcon from '@material-ui/icons/Toys';
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
+import {makeGetCall} from './axiosMethods'
 
 const drawerWidth = 240;
 
@@ -33,9 +34,15 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function Sidebar() {
+export default function Sidebar(props) {
   const classes = useStyles();
 
+  function reloadListings(route){
+    makeGetCall(route).then((posts)=>{
+      props.setListings(posts);
+    });
+  }
+  
   return (
       <Drawer
         className={classes.drawer}
@@ -47,47 +54,47 @@ export default function Sidebar() {
         <Toolbar />
         <div className={classes.drawerContainer}>
           <List>
-            <ListItem button key={"All"}>
+            <ListItem button key={"All"} onClick={(e)=>reloadListings('/allposts')}>
               <ListItemIcon><AllInclusiveIcon /></ListItemIcon>
               <ListItemText primary={"All"} />
             </ListItem>
-            <ListItem button key={"Auto"}>
+            <ListItem button key={"Auto"} onClick={(e)=>props.setListings([])}>
               <ListItemIcon><DriveEtaIcon /></ListItemIcon>
               <ListItemText primary={"Auto"} />
             </ListItem>
-            <ListItem button key={"Bikes"}>
+            <ListItem button key={"Bikes"} onClick={(e)=>reloadListings('/allposts')}>
               <ListItemIcon><DirectionsBikeIcon /></ListItemIcon>
               <ListItemText primary={"Bikes"} />
             </ListItem>
-            <ListItem button key={"Boats"}>
+            <ListItem button key={"Boats"} onClick={(e)=>reloadListings('/allposts')}>
               <ListItemIcon><DirectionsBoatIcon /></ListItemIcon>
               <ListItemText primary={"Boats"} />
             </ListItem>
-            <ListItem button key={"Computers"}>
+            <ListItem button key={"Computers"} onClick={(e)=>reloadListings('/allposts')}>
               <ListItemIcon><ComputerIcon /></ListItemIcon>
               <ListItemText primary={"Computers"} />
             </ListItem>
-            <ListItem button key={"Household Items"}>
+            <ListItem button key={"Household Items"} onClick={(e)=>reloadListings('/allposts')}>
               <ListItemIcon><HomeIcon /></ListItemIcon>
               <ListItemText primary={"Household Items"} />
             </ListItem>
-            <ListItem button key={"Music"}>
+            <ListItem button key={"Music"} onClick={(e)=>reloadListings('/allposts')}>
               <ListItemIcon><MusicNoteIcon /></ListItemIcon>
               <ListItemText primary={"Music"} />
             </ListItem>
-            <ListItem button key={"Sports"}>
+            <ListItem button key={"Sports"} onClick={(e)=>reloadListings('/allposts')}>
               <ListItemIcon><SportsIcon /></ListItemIcon>
               <ListItemText primary={"Sports"} />
             </ListItem>
-            <ListItem button key={"Tools"}>
+            <ListItem button key={"Tools"} onClick={(e)=>reloadListings('/allposts')}>
               <ListItemIcon><BuildIcon /></ListItemIcon>
               <ListItemText primary={"Tools"} />
             </ListItem>
-            <ListItem button key={"Toys"}>
+            <ListItem button key={"Toys"} onClick={(e)=>reloadListings('/allposts')}>
               <ListItemIcon><ToysIcon /></ListItemIcon>
               <ListItemText primary={"Toys"} />
             </ListItem>
-            <ListItem button key={"Video Games"}>
+            <ListItem button key={"Video Games"} onClick={(e)=>reloadListings('/allposts')}>
               <ListItemIcon><SportsEsportsIcon /></ListItemIcon>
               <ListItemText primary={"Video Games"} />
             </ListItem>
