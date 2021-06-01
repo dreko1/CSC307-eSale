@@ -8,7 +8,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {makePostCall} from './axiosMethods'
 import { Input } from '@material-ui/core';
-import FilterMenu from './FilterMenu';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
 import './App.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -17,7 +19,28 @@ const useStyles = makeStyles((theme) => ({
     height: '100%'
   },
 }));
+const options = [
+  'All',
+  'Auto',
+  'Bikes',
+  'Boats',
+  'Computers',
+  'Household Items',
+  'Music',
+  'Sports',
+  'Tools',
+  'Toys',
+  'Video Games'
+];
 
+const MenuProps = {
+  PaperProps: {
+      style: {
+          maxHeight: 48 * 4.5 + 8,
+          width: 250,
+      },
+  },
+};
 export default function CreatePost(props){
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
@@ -25,6 +48,7 @@ export default function CreatePost(props){
       title: "",
       description: "",
       contact: "",
+      category: "All",
       image_name: ""
     });
 
@@ -69,14 +93,13 @@ export default function CreatePost(props){
         title: state.title,
         price: 1,
         description: state.description,
-        category: "no category",
+        category: state.category,
         contact: state.contact,
         city: "no city provided",
         state: "no state provided",
         zip: "no zip provided",
         image: imageFile
       }
-      console.log(listing);
       
       makePostCall('/post', listing).then(response => {
           if(response.status===201){
@@ -150,7 +173,23 @@ export default function CreatePost(props){
           <DialogContent>
             <DialogContentText>
             </DialogContentText>
-            <FilterMenu value={state.category} onChange={handleChange}/>
+            <InputLabel>Category</InputLabel>
+            <Select
+                autowidth
+                labelId="category-label"
+                required
+                id="category-name"
+                onChange={handleChange}
+                name='category'
+                MenuProps={MenuProps}
+                defaultValue="All"
+            >
+                {options.map((option) => (
+                    <MenuItem key={option} value={option} selected={option === state.category}>
+                        {option}
+                    </MenuItem>
+                ))}
+            </Select>
           </DialogContent>
 
           <DialogContent>
