@@ -4,13 +4,13 @@ import bcrypt
 from bson.objectid import ObjectId
 from bson.json_util import dumps
 from flask import Flask, request, flash, jsonify, redirect, url_for
-'''from flask_login import (
+from flask_login import (
     LoginManager,
     current_user,
     login_required,
     login_user,
     logout_user
-)'''
+)
 from datetime import datetime
 import json
 
@@ -26,6 +26,17 @@ app = Flask(__name__)
 # CORS stands for Cross Origin Requests.
 # Here we'll allow requests coming from any domain. Not recommended for production environment.
 CORS(app)
+
+app.secret_key = 'some key'
+# Init Flask-Login
+login_manager = LoginManager()
+login_manager.login_view = 'login'
+login_manager.init_app(app)
+
+
+@login_manager.user_loader
+def load_user(username):
+    return User().get(username)
 
 
 @app.errorhandler(404)
@@ -53,6 +64,7 @@ def register():
         if user == None:
             return jsonify({'error': 'This Username already exists!'}), 409
         else:
+            login_user(user)
             return jsonify(success=True), 201
 
 #login should contain fields:
@@ -71,13 +83,23 @@ def login():
         if not user:
             return jsonify({'error': 'This Username does not exist!'}), 404
         elif user.verify_credentials(req['password']):
+            login_user(user)
             return jsonify(success=True), 201
         else:
             return jsonify({'error': 'This password is incorrect'}), 403
 
+
+@app.route('/logout')
+@login_required
+def logout():
+    pass
+    logout_user()
+    return jsonify({"message": "logout success"}), 200
+
 # post should include fields for:
 # username, password, title, price, description, category, contact, city, state, zip, image.
 @app.route('/post', methods=['POST'])
+# @login_required
 def post_listing():
     if request.method == 'POST':
         req = request.get_json()
@@ -112,6 +134,7 @@ def post_listing():
 
 
 @app.route('/post/<id>', methods=['POST', 'DELETE'])
+@login_required
 def edit_listing(id):
     # TODO
     pass
@@ -126,6 +149,7 @@ def edit_listing(id):
         '''
 
 @app.route('/profile/<username>', methods=['GET', 'POST', 'DELETE'])
+@login_required
 def get_profile(username):
     # Not sure if any of this is correct
     if request.method == 'GET':  # Get users likes
@@ -148,6 +172,7 @@ def get_profile(username):
 
 
 @app.route('/profile/<username>/likes', methods=['GET', 'POST'])
+@login_required
 def get_likes(username):
     if request.method == 'GET': # Get users likes
         likes = User().get_likes(username)

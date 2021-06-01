@@ -8,6 +8,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {makePostCall} from './axiosMethods'
 import { Input } from '@material-ui/core';
+import FilterMenu from './FilterMenu';
 import './App.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -23,20 +24,24 @@ export default function CreatePost(props){
     const [state, setState] = React.useState({
       title: "",
       description: "",
-      contact: ""
+      contact: "",
+      image_name: ""
     });
+
     const [imageFile, setImageFile] = React.useState("");
-  
+    
     var reader = new FileReader();
     reader.onloadend = ()=>{setImageFile(reader.result)}
   
     function uploadImageFile(e){
       if (e.target && e.target.files[0]) {
         reader.readAsDataURL(e.target.files[0]);
+          setState({image_name: e.target.files[0].name});
       }else{
         setImageFile(null);
       }
     }
+
     const handleChange = (event) => {
       const name = event.target.name;
       setState({...state, [name]: event.target.value});
@@ -47,6 +52,11 @@ export default function CreatePost(props){
       };
     
     const handleClose = () => {
+      setState({
+        title: "",
+        description: "",
+        contact: "",
+        image_name: ""})
       setOpen(false);
     };
   
@@ -69,7 +79,7 @@ export default function CreatePost(props){
       console.log(listing);
       
       makePostCall('/post', listing).then(response => {
-          if(response.status==201){
+          if(response.status===201){
               console.log("new posting request succeded");
               console.log(response);
           }else{
@@ -107,7 +117,6 @@ export default function CreatePost(props){
             <DialogContentText>
             </DialogContentText>
             <TextField
-              autoFocus
               margin="dense"
               label="Contact Information" 
               value={state.contact} 
@@ -125,7 +134,6 @@ export default function CreatePost(props){
             <DialogContentText>
             </DialogContentText>
             <TextField
-              autoFocus
               margin="dense"
               label="Item Description" 
               value={state.description} 
@@ -138,9 +146,24 @@ export default function CreatePost(props){
               rows="2"
             />
           </DialogContent>
-            <DialogContentText>Upload Image</DialogContentText>
-            <Input type="file" name="myImage" onChange={uploadImageFile}/>
+
           <DialogContent>
+            <DialogContentText>
+            </DialogContentText>
+            <FilterMenu value={state.category} onChange={handleChange}/>
+          </DialogContent>
+
+          <DialogContent>
+            <DialogContentText>Upload Image</DialogContentText>
+            <label>
+              <Input id="image" name="myImage" style={{ display: 'none' }} type="file" onChange={uploadImageFile}/>
+            <Button variant="contained" component="span">
+                Choose File
+              </Button>
+              <div>
+                {state.image_name}
+              </div>
+            </label>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose} color="primary">
@@ -150,6 +173,7 @@ export default function CreatePost(props){
               Submit
             </Button>
           </DialogActions>
+
         </Dialog>
       </div>
     );
