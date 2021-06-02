@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     color: 'rgba(255, 255, 255, 0.54)',
   },
   typography: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(1),
   },
 }));
 
@@ -63,6 +63,14 @@ function Content(props) {
                 open={open}
                 anchorEl={anchorEl}
                 onClose={handleClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }}
               >
               <Typography className={classes.typography}>Title: {listing.title}</Typography>
               <Typography className={classes.typography}>Description: {listing.description}</Typography>
