@@ -1,6 +1,8 @@
 # CSC307-eSale
 
-Class project for CSC-307. Create an online resource for selling various items.
+Class project for CSC-307. 
+
+Create an online resource for selling various items.
 
 The Backend is written in Python using Flask and the style guide specified at https://github.com/Microsoft/vscode-python (A vscode plugin)
 
