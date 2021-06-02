@@ -163,8 +163,6 @@ export default function CreatePost(props){
           </Collapse>
           <DialogTitle id="form-dialog-title">Create Post</DialogTitle>
           <DialogContent>
-            <DialogContentText>
-            </DialogContentText>
             <TextField
               autoFocus
               margin="dense"
@@ -180,8 +178,6 @@ export default function CreatePost(props){
           </DialogContent>
 
           <DialogContent>
-            <DialogContentText>
-            </DialogContentText>
             <TextField
               margin="dense"
               label="Contact Information" 
@@ -196,8 +192,6 @@ export default function CreatePost(props){
           </DialogContent>
 
           <DialogContent>
-            <DialogContentText>
-            </DialogContentText>
             <TextField
               margin="dense"
               label="Item Description" 
@@ -213,8 +207,6 @@ export default function CreatePost(props){
           </DialogContent>
 
           <DialogContent>
-            <DialogContentText>
-            </DialogContentText>
             <TextField
               id="standard-number"
               label="Price (US Dollars)" 
@@ -234,8 +226,6 @@ export default function CreatePost(props){
           </DialogContent>
 
           <DialogContent>
-            <DialogContentText> 
-            </DialogContentText>
             <InputLabel>Location</InputLabel>
             <TextField
               margin="dense"
@@ -270,8 +260,6 @@ export default function CreatePost(props){
           </DialogContent>
 
           <DialogContent>
-            <DialogContentText>
-            </DialogContentText>
             <InputLabel>Category</InputLabel>
             <Select
                 autowidth
