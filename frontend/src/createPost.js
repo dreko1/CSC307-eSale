@@ -49,7 +49,8 @@ export default function CreatePost(props){
       description: "",
       contact: "",
       category: "All",
-      image_name: ""
+      image_name: "",
+      price: "0"
     });
 
     const [imageFile, setImageFile] = React.useState("");
@@ -60,7 +61,7 @@ export default function CreatePost(props){
     function uploadImageFile(e){
       if (e.target && e.target.files[0]) {
         reader.readAsDataURL(e.target.files[0]);
-          setState({image_name: e.target.files[0].name});
+        setState({...state, image_name: e.target.files[0].name})
       }else{
         setImageFile(null);
       }
@@ -83,7 +84,14 @@ export default function CreatePost(props){
         image_name: ""})
       setOpen(false);
     };
-  
+    const handlePriceChange = (event) => {
+      event.target.value = parseInt(event.target.value, 10);
+      if(event.target.value==""){
+        event.target.value = 0;
+      }
+      handleChange(event)
+    }
+
     const handleSubmit = async () => {
       const credentials = props.getCredentials();
     
@@ -91,7 +99,7 @@ export default function CreatePost(props){
         username: credentials.username,
         password: credentials.password,
         title: state.title,
-        price: 1,
+        price: state.price,
         description: state.description,
         category: state.category,
         contact: state.contact,
@@ -169,6 +177,26 @@ export default function CreatePost(props){
               rows="2"
             />
           </DialogContent>
+          <DialogContent>
+            <DialogContentText>
+            </DialogContentText>
+            <TextField
+              id="standard-number"
+              label="Price (US Dollars)" 
+              type="number"
+              value = {state.price}
+              onChange = {handlePriceChange}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              inputProps={{ 
+                name: 'price',
+              }}
+              required
+              size="medium"
+              margin="dense"
+            />
+          </DialogContent>
 
           <DialogContent>
             <DialogContentText>
@@ -193,15 +221,12 @@ export default function CreatePost(props){
           </DialogContent>
 
           <DialogContent>
-            <DialogContentText>Upload Image</DialogContentText>
+            <DialogContentText>{"Upload Image - "+state.image_name}</DialogContentText>
             <label>
               <Input id="image" name="myImage" style={{ display: 'none' }} type="file" onChange={uploadImageFile}/>
             <Button variant="contained" component="span">
-                Choose File
+                Select an Image
               </Button>
-              <div>
-                {state.image_name}
-              </div>
             </label>
           </DialogContent>
           <DialogActions>
