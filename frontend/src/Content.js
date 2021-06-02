@@ -40,7 +40,7 @@ function Content(props) {
       <GridList cellHeight={240} className={classes.gridList} cols={3}>
         {props.listings.map((listing) => (
           <GridListTile key={listing.title}>
-          <img src={listing.image} alt={listing.title} />
+          <img src={listing.image}/>
           <GridListTileBar
             title={listing.title}
             subtitle={<span>seller: {listing.username}</span>}
