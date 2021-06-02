@@ -42,28 +42,28 @@ def test_update():
 
 
 def test_user_get_and_verify():
-    defaultUser = User.get("default_username")
-    alsoDefaultUser = User.get('default_username')
+    defaultUser = User.get("default_user")
+    alsoDefaultUser = User.get('default_user')
     print(defaultUser)
     print(alsoDefaultUser)
     assert defaultUser['_id'] == alsoDefaultUser['_id']
     #assert not defaultUser.verify_credentials("not_password")
     #assert defaultUser.verify_credentials("default_password")
 
-def test_user_get_likes():
-    user = User.get("default_username")
-    likes = user.get_likes()
-    assert likes.count(ObjectId("60ae95468b08c747153d33aa")) == 1
-    assert likes.count(ObjectId("60ae95468b08c747153d33ab")) == 1
+def test_new_user():
+    name = "botUser"+str(random.randint(0, 1000000))
+    user = User.new_user(name, "password", "bot@esale.com")
+    assert user.username == name
+    user = User.new_user(name, "password2", "bot2@esale.com")
+    assert user == None
 
-def test_user_is_admin():
-    #this test fails for some reason... user is none? why?
-    pass
-    #user = User.get("default_username")
-    #assert not (user.isAdmin())
+def test_verify_credentials():
+    defaultUser = User.get("default_user")
+    print(defaultUser['password'])
+    assert defaultUser.verify_credentials("default_password")
 
 def test_listing_new():
-    user = User.get("default_username")
+    user = User.get("default_user")
     listingTitle = 'listing '+str(random.randint(0, 10000000000))
     listing = Listing.new_listing(user, listingTitle, 20, 'description', 'category', 'contact')
     assert listing['_id']
@@ -87,92 +87,5 @@ def test_listing_set_image():
     listing.reload()
     assert listing['image'] == randString
 
-def test_listing_find_by_seller():
-    pass
-
-def test_listing_find_by_city():
-    pass
-
-def test_listing_find_by_state():
-    pass
-
-def test_listing_find_by_zpi_code():
-    pass
-
-'''
-contents of database['test']['users']:
-    {
-        "username": "default_username",
-        "password": "default_password",
-        "email": "default@email",
-        "admin": false,
-        "posts": [null, {
-            "$oid": "60ae95468b08c747153d33aa"
-        }, {
-            "$oid": "60ae95468b08c747153d33ab"
-        }, {
-            "$oid": "60ae95468b08c747153d33ac"
-        }],
-        "likes": [null, {
-            "$oid": "60ae95468b08c747153d33aa"
-        }, {
-            "$oid": "60ae95468b08c747153d33ab"
-        }],
-        "address": {}
-    }
-contents of database['test']['listings']:
-    {
-        "title": "test_title1",
-        "price": "p",
-        "description": "d",
-        "category": "ca",
-        "userId": {
-            "$oid": "60ae9054825281273fa3c56e"
-        },
-        "username": "default_username",
-        "contact": "co",
-        "location": {
-            "city": "",
-            "state": "",
-            "zip": ""
-        },
-        "image": "",
-        "time_posted": "05-26-2021, 11:36:54"
-    }
-    {
-        "title": "test_title2",
-        "price": "p",
-        "description": "d",
-        "category": "ca",
-        "userId": {
-            "$oid": "60ae9054825281273fa3c56e"
-        },
-        "username": "default_username",
-        "contact": "co",
-        "location": {
-            "city": "",
-            "state": "",
-            "zip": ""
-        },
-        "image": "",
-        "time_posted": "05-26-2021, 11:36:54"
-    }
-    {
-        "title": "test_title3",
-        "price": "p",
-        "description": "d",
-        "category": "ca",
-        "userId": {
-            "$oid": "60ae9054825281273fa3c56e"
-        },
-        "username": "default_username",
-        "contact": "co",
-        "location": {
-            "city": "",
-            "state": "",
-            "zip": ""
-        },
-        "image": "",
-        "time_posted": "05-26-2021, 11:36:54"
-    }
-'''
+def test_listing_find():
+    assert list(Listing.find_by_category('Boats')) == []

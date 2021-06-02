@@ -36,7 +36,6 @@ class Model(dict):
                 for key in resp:
                     self[key] = resp[key]
                 return self
-        return None
 
     # Removes the item with the corresponding _id
     def remove(self):
@@ -50,7 +49,6 @@ class Model(dict):
         if self._id:
             resp = self.collection.update_one({'_id': self._id},{'$set': self})
             return self
-        return None
 
 
 
@@ -94,27 +92,9 @@ class User(Model):
         user = User.collection.find_one({'username': username})
         if user:
             return User(user)
-        else:
-            return None
     
     def verify_credentials(self, password):
         return bcrypt.checkpw(password.encode('utf8'), self['password'])
-
-    def get_likes(self):
-        self.reload()
-        return self['likes']
-
-    def add_like(self, listing):
-        self.reload()
-        self['likes'].append(listing['_id'])
-        self.update()
-
-    def is_admin(self):
-        self.reload()
-        try:
-            return self['isAdmin'] == True
-        except:
-            return False
 
 
 class Listing(Model):
