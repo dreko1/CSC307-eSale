@@ -95,8 +95,8 @@ export default function CreatePost(props){
     }
 
     const handleSubmit = async () => {
-      const credentials = props.getCredentials();
-    
+      const credentials = props.credentials
+      console.log(credentials)
       const listing = {
         username: credentials.username,
         password: credentials.password,
