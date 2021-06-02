@@ -41,6 +41,7 @@ const MenuProps = {
       },
   },
 };
+
 export default function CreatePost(props){
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
@@ -145,6 +146,7 @@ export default function CreatePost(props){
               size="medium"
             />
           </DialogContent>
+
           <DialogContent>
             <DialogContentText>
             </DialogContentText>
