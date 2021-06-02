@@ -172,25 +172,8 @@ class Listing(Model):
     sort_by_time_reverse = {'time_posted': -1}
 
     def find_all(query={}, sort_param=None):
-        if sort_param:
-            all_listings = Listing.collection.find(query).sort(sort_param)
-        else:
-            # default to sorting listings by time posted in descending order
-            all_listings = Listing.collection.find(query).sort({'time_posted': -1})
-        return all_listings
+        return Listing.collection.find(query)
 
     def find_by_category(category, sort_param=None):
         return Listing.find_all({'category': category}, sort_param)
-    
-    def find_by_seller(seller, sort_param=None):
-        return Listing.find_all({'seller': seller}, sort_param)
-
-    def find_by_city(city, sort_param=None):
-        return Listing.find_all({'location': {'city': city}}, sort_param)
-
-    def find_by_state(state, sort_param=None):
-        return Listing.find_all({'location': {'state': state}}, sort_param)
-
-    def find_by_zip(zip, sort_param=None):
-        return Listing.find_all({'location': {'zip': zip}}, sort_param)
 

@@ -105,18 +105,9 @@ def post_listing():
         req = request.get_json()
         #Check that all required arguments are provided in the request.
         if not (req['username'] and req['password']):
-            print("a")
             return jsonify({'error': 'Must provide username and password!'}), 409
         if not (req['title'] and req['price'] and req['description'] and req['category'] and req['contact']):
-            print(req['title'])
-            print(req['price'])
-            print(req['description'])
-            print(req['category'])
-            print(req['contact'])
             return jsonify({'error': 'Must provide title, price, description, category, and contact!'}), 409
-        if not (req['city'] and req['state'] and req['zip']):
-            print("c")
-            return jsonify({'error': 'Must provide city, state, and zip!'}), 409
         
         #Check that user exists and password is correct
         user = User.get(req['username'])
@@ -132,21 +123,6 @@ def post_listing():
         
         return jsonify({"_id": str(listing['_id'])}), 201
 
-
-@app.route('/post/<id>', methods=['POST', 'DELETE'])
-@login_required
-def edit_listing(id):
-    # TODO
-    pass
-    '''
-    if request.method == 'POST': # Editing a listing
-        
-        listing = Listing({'_id': id})
-        if listing.reload():
-            listing
-    elif request.method == 'DELETE': # Deleting a listing
-        listing = Listing({'_id': id})
-        '''
 
 @app.route('/profile/<username>', methods=['GET', 'POST', 'DELETE'])
 @login_required
@@ -184,18 +160,9 @@ def get_likes(username):
 @app.route('/browse/<category>', methods=['GET'])
 def browse(category):
     if request.method == 'GET':  # Get users likes
-        # Note: 'sort_param' should be the string of the Listing parameter the user wishes to sort by
-        sort_param = request.args.get('sort_param') 
-        # filters = request.args.get('filters')
-        if category == 'all':
-            listings = Listing().find_all(sort_param)
+        print(category)
+        if category == 'All':
+            listings = Listing.find_all()
         else:
-            listings = Listing().find_by_category(category, sort_param)
-        return listings 
-
-
-@app.route('/allposts', methods=['GET'])
-def allposts():
-    if request.method == 'GET':  # Get users likes
-        listings = dumps(list(Listing.collection.find({})))
-        return listings
+            listings = Listing.find_by_category(category)
+        return dumps(list(listings)) 
