@@ -194,7 +194,6 @@ def browse(category):
         return listings 
 
 
-
 @app.route('/allposts', methods=['GET'])
 def allposts():
     if request.method == 'GET':  # Get users likes
