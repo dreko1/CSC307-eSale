@@ -39,6 +39,7 @@ export default function Sidebar(props) {
 
   function reloadListings(route){
     makeGetCall(route).then((posts)=>{
+      console.log(posts);
       props.setListings(posts);
     });
   }
@@ -54,47 +55,47 @@ export default function Sidebar(props) {
         <Toolbar />
         <div className={classes.drawerContainer}>
           <List>
-            <ListItem button key={"All"} onClick={(e)=>reloadListings('/allposts')}>
+            <ListItem button key={"All"} onClick={(e)=>reloadListings('/browse/All')}>
               <ListItemIcon><AllInclusiveIcon /></ListItemIcon>
               <ListItemText primary={"All"} />
             </ListItem>
-            <ListItem button key={"Auto"} onClick={(e)=>props.setListings([])}>
+            <ListItem button key={"Auto"} onClick={(e)=>reloadListings('/browse/Auto')}>
               <ListItemIcon><DriveEtaIcon /></ListItemIcon>
               <ListItemText primary={"Auto"} />
             </ListItem>
-            <ListItem button key={"Bikes"} onClick={(e)=>reloadListings('/allposts')}>
+            <ListItem button key={"Bikes"} onClick={(e)=>reloadListings('/browse/Bikes')}>
               <ListItemIcon><DirectionsBikeIcon /></ListItemIcon>
               <ListItemText primary={"Bikes"} />
             </ListItem>
-            <ListItem button key={"Boats"} onClick={(e)=>reloadListings('/allposts')}>
+            <ListItem button key={"Boats"} onClick={(e)=>reloadListings('/browse/Boats')}>
               <ListItemIcon><DirectionsBoatIcon /></ListItemIcon>
               <ListItemText primary={"Boats"} />
             </ListItem>
-            <ListItem button key={"Computers"} onClick={(e)=>reloadListings('/allposts')}>
+            <ListItem button key={"Computers"} onClick={(e)=>reloadListings('/browse/Computers')}>
               <ListItemIcon><ComputerIcon /></ListItemIcon>
               <ListItemText primary={"Computers"} />
             </ListItem>
-            <ListItem button key={"Household Items"} onClick={(e)=>reloadListings('/allposts')}>
+            <ListItem button key={"Household Items"} onClick={(e)=>reloadListings('/browse/Household%20Items')}>
               <ListItemIcon><HomeIcon /></ListItemIcon>
               <ListItemText primary={"Household Items"} />
             </ListItem>
-            <ListItem button key={"Music"} onClick={(e)=>reloadListings('/allposts')}>
+            <ListItem button key={"Music"} onClick={(e)=>reloadListings('/browse/Music')}>
               <ListItemIcon><MusicNoteIcon /></ListItemIcon>
               <ListItemText primary={"Music"} />
             </ListItem>
-            <ListItem button key={"Sports"} onClick={(e)=>reloadListings('/allposts')}>
+            <ListItem button key={"Sports"} onClick={(e)=>reloadListings('/browse/Sports')}>
               <ListItemIcon><SportsIcon /></ListItemIcon>
               <ListItemText primary={"Sports"} />
             </ListItem>
-            <ListItem button key={"Tools"} onClick={(e)=>reloadListings('/allposts')}>
+            <ListItem button key={"Tools"} onClick={(e)=>reloadListings('/browse/Tools')}>
               <ListItemIcon><BuildIcon /></ListItemIcon>
               <ListItemText primary={"Tools"} />
             </ListItem>
-            <ListItem button key={"Toys"} onClick={(e)=>reloadListings('/allposts')}>
+            <ListItem button key={"Toys"} onClick={(e)=>reloadListings('/browse/Toys')}>
               <ListItemIcon><ToysIcon /></ListItemIcon>
               <ListItemText primary={"Toys"} />
             </ListItem>
-            <ListItem button key={"Video Games"} onClick={(e)=>reloadListings('/allposts')}>
+            <ListItem button key={"Video Games"} onClick={(e)=>reloadListings('/browse/Video%20Games')}>
               <ListItemIcon><SportsEsportsIcon /></ListItemIcon>
               <ListItemText primary={"Video Games"} />
             </ListItem>
