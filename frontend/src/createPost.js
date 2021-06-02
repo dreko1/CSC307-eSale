@@ -109,16 +109,16 @@ export default function CreatePost(props){
     const [error, setError] = React.useState("");
 
     const handleSubmit = async () => {
-      const credentials = props.getCredentials();
-      if (credentials.username==="") {
-        setError("Must be signed in to post")
-      } else if (state.title==="") {
-        setError("Must enter a title")
-      } else if (state.category==="") {
-        setError("Must select a category")
-      } else if (state.price==="") {
-        setError("Must enter a price")
-      } else {
+        const credentials = props.credentials;
+        if (credentials.username==="") {
+          setError("Must be signed in to post")
+        } else if (state.title==="") {
+          setError("Must enter a title")
+        } else if (state.category==="") {
+          setError("Must select a category")
+        } else if (state.price==="") {
+          setError("Must enter a price")
+        } else {
 
         const listing = {
           username: credentials.username,
