@@ -2,7 +2,10 @@
 
 Class project for CSC-307. 
 
-Create an online resource for selling various items.
+Create an online resource for selling various items similar to Craigslist. Users are able to post listings of items they are trying to sell to an end user.
+Users can either login or signup to their account to make a posting or view postings as guests.
+
+
 
 The Backend is written in Python using Flask and the style guide specified at https://github.com/Microsoft/vscode-python (A vscode plugin)
 
