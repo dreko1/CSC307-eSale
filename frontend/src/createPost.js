@@ -41,6 +41,7 @@ const MenuProps = {
       },
   },
 };
+
 export default function CreatePost(props){
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
@@ -48,14 +49,9 @@ export default function CreatePost(props){
       title: "",
       description: "",
       contact: "",
-<<<<<<< HEAD
-      catgegory: "",
-      image_name: ""
-=======
       category: "All",
       image_name: "",
       price: "0"
->>>>>>> 2f00591042b53896e741ad8f7626aef40a1af205
     });
 
     const [imageFile, setImageFile] = React.useState("");
@@ -150,6 +146,7 @@ export default function CreatePost(props){
               size="medium"
             />
           </DialogContent>
+
           <DialogContent>
             <DialogContentText>
             </DialogContentText>
@@ -207,14 +204,6 @@ export default function CreatePost(props){
           <DialogContent>
             <DialogContentText>
             </DialogContentText>
-<<<<<<< HEAD
-            <FilterMenu 
-              onChange={handleChange}
-              inputProps={{
-                name: 'category',
-              }}
-            />,
-=======
             <InputLabel>Category</InputLabel>
             <Select
                 autowidth
@@ -232,7 +221,6 @@ export default function CreatePost(props){
                     </MenuItem>
                 ))}
             </Select>
->>>>>>> 2f00591042b53896e741ad8f7626aef40a1af205
           </DialogContent>
 
           <DialogContent>
