@@ -20,9 +20,9 @@ export async function makePostCall(path, data){
         }
         return response;
     } catch (error) {
-        console.log(error);
+        console.log(error.response);
+        return error.response;
     }
-    return false;
 }
 export async function makeGetCall(path){
     try{

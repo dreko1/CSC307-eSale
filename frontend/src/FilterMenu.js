@@ -43,7 +43,7 @@ function getStyles(option, theme) {
 export default function SimpleSelect() {
     const theme = useTheme();
     const [option, setCategory] = React.useState('');
-
+    
     const handleChange = (event) => {
         setCategory(event.target.value);
     };
@@ -55,13 +55,13 @@ export default function SimpleSelect() {
                 autowidth
                 labelId="category-label"
                 required
-                id="category-name"
+                id="select-category"
                 value={option}
                 onChange={handleChange}
                 MenuProps={MenuProps}
             >
                 {options.map((option) => (
-                    <MenuItem key={option} selected={option === 'Pyxis'} style={getStyles(option, theme)}>
+                    <MenuItem value={option} key={option} selected={option === 'Pyxis'} style={getStyles(option, theme)}>
                         {option}
                     </MenuItem>
                 ))}

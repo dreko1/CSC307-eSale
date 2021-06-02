@@ -76,17 +76,17 @@ def login():
 
         #Check that all required arguments are provided in the request.
         if not (req['username'] and req['password']):
-            return jsonify({'error': 'Must provide username and password!'}), 409
+            return jsonify({'message': 'Must provide username and password!'}), 409
 
         #Verify user existance, and password correctness.
         user = User.get(req['username'])
         if not user:
-            return jsonify({'error': 'This Username does not exist!'}), 404
+            return jsonify({'message': 'This Username does not exist!'}), 404
         elif user.verify_credentials(req['password']):
             login_user(user)
             return jsonify(success=True), 201
         else:
-            return jsonify({'error': 'This password is incorrect'}), 403
+            return jsonify({'message': 'This password is incorrect'}), 403
 
 
 @app.route('/logout')

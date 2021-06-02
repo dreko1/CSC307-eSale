@@ -25,6 +25,7 @@ export default function CreatePost(props){
       title: "",
       description: "",
       contact: "",
+      catgegory: "",
       image_name: ""
     });
 
@@ -56,6 +57,7 @@ export default function CreatePost(props){
         title: "",
         description: "",
         contact: "",
+        category: "",
         image_name: ""})
       setOpen(false);
     };
@@ -69,7 +71,7 @@ export default function CreatePost(props){
         title: state.title,
         price: 1,
         description: state.description,
-        category: "no category",
+        category: state.category,
         contact: state.contact,
         city: "no city provided",
         state: "no state provided",
@@ -122,7 +124,7 @@ export default function CreatePost(props){
               value={state.contact} 
               onChange={handleChange}
               inputProps={{ 
-              name: 'contact',
+                name: 'contact',
               }}
               required
               size="medium"
@@ -150,7 +152,12 @@ export default function CreatePost(props){
           <DialogContent>
             <DialogContentText>
             </DialogContentText>
-            <FilterMenu value={state.category} onChange={handleChange}/>
+            <FilterMenu 
+              onChange={handleChange}
+              inputProps={{
+                name: 'category',
+              }}
+            />,
           </DialogContent>
 
           <DialogContent>
