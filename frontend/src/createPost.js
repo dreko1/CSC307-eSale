@@ -51,14 +51,17 @@ export default function CreatePost(props){
       contact: "",
       category: "All",
       image_name: "",
-      price: "0"
+      price: "0",
+      city: "",
+      state: "",
+      zip: ""
     });
 
     const [imageFile, setImageFile] = React.useState("");
     
     var reader = new FileReader();
     reader.onloadend = ()=>{setImageFile(reader.result)}
-  
+    
     function uploadImageFile(e){
       if (e.target && e.target.files[0]) {
         reader.readAsDataURL(e.target.files[0]);
@@ -82,13 +85,18 @@ export default function CreatePost(props){
         title: "",
         description: "",
         contact: "",
-        category: "",
-        image_name: ""})
+        category: "All",
+        image_name: "",
+        price: "0",
+        city: "",
+        state: "",
+        zip: ""
+      })
       setOpen(false);
     };
     const handlePriceChange = (event) => {
       event.target.value = parseInt(event.target.value, 10);
-      if(event.target.value==""){
+      if(event.target.value===""){
         event.target.value = 0;
       }
       handleChange(event)
@@ -105,9 +113,9 @@ export default function CreatePost(props){
         description: state.description,
         category: state.category,
         contact: state.contact,
-        city: "no city provided",
-        state: "no state provided",
-        zip: "no zip provided",
+        city: state.city,
+        state: state.state,
+        zip: state.zip,
         image: imageFile
       }
       
@@ -162,8 +170,7 @@ export default function CreatePost(props){
               size="medium"
             />
           </DialogContent>
-  
-  
+
           <DialogContent>
             <DialogContentText>
             </DialogContentText>
@@ -180,6 +187,7 @@ export default function CreatePost(props){
               rows="2"
             />
           </DialogContent>
+
           <DialogContent>
             <DialogContentText>
             </DialogContentText>
@@ -198,6 +206,43 @@ export default function CreatePost(props){
               required
               size="medium"
               margin="dense"
+            />
+          </DialogContent>
+
+          <DialogContent>
+            <DialogContentText> 
+            </DialogContentText>
+            <InputLabel>Location</InputLabel>
+            <TextField
+              margin="dense"
+              label="City"
+              value={state.city}
+              onChange={handleChange}
+              inputProps={{
+                name: 'city',
+              }}
+              required
+              size="medium"
+            />
+            <TextField
+              margin="dense"
+              label="State"
+              value={state.state}
+              onChange={handleChange}
+              inputProps={{
+                name: 'state',
+              }}
+              size="medium"
+            />
+            <TextField
+              margin="dense"
+              label="Zip Code"
+              value={state.zip}
+              onChange={handleChange}
+              inputProps={{
+                name: 'zip',
+              }}
+              size="medium"
             />
           </DialogContent>
 
@@ -222,7 +267,7 @@ export default function CreatePost(props){
                 ))}
             </Select>
           </DialogContent>
-
+          
           <DialogContent>
             <DialogContentText>{"Upload Image - "+state.image_name}</DialogContentText>
             <label>
