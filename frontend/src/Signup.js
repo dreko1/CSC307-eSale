@@ -2,6 +2,8 @@ import React from 'react'
 import {Button, TextField, Container, unstable_createMuiStrictModeTheme} from '@material-ui/core';
 import {useState} from 'react'
 import {makePostCall} from './axiosMethods'
+import Collapse from '@material-ui/core/Collapse';
+import Alert from '@material-ui/lab/Alert';
 import './App.css';
 
 
@@ -20,11 +22,13 @@ function Signup(props) {
         emailError: '',
     });
     
+    const [error, setError] = React.useState("");
+
     //Updates some property of the usestate to a given value.
     function updateProperty(property, value){
         var stateCopy = Object.assign({}, user);
         stateCopy[property] = value;
-        if(stateCopy["password"]!=stateCopy["password2"]){
+        if(stateCopy["password"]!==stateCopy["password2"]){
             stateCopy["password2Error"] = "Passwords must match";
         }else{
             stateCopy["password2Error"] = "";
@@ -34,7 +38,7 @@ function Signup(props) {
         }else{
             stateCopy["passwordError"] = "";
         }
-        if(stateCopy["username"]!=""){
+        if(stateCopy["username"]!==""){
             stateCopy["usernameError"] = "";
         }
         if(stateCopy["email"].includes("@")){
@@ -53,32 +57,40 @@ function Signup(props) {
     //This function checks password equivalence, makes a post call, then has to-be-implemented logic based off of the response.
     //TODO
     function submitForm(){
-        if(user.password!=user.password2){
-            return;
+        if(user.password!==user.password2){
+            setError("Passwords do not match")
         }else if(user.password.length<6){
-            return;
-        }else if(user.username==""){
+            setError("Password must be at least 6 characters long")
+        }else if(user.username===""){
             updateProperty("usernameError", "Must provide a username");
         }else if(!user.email.includes("@")){
-            return;
+            setError("Invalid email address")
         }else{
             makePostCall('/signup', user).then(response => {
-                if(response.status==201){
+                if(response.status===201){
                     console.log("signup request succeded");
                     console.log(response);
                     props.onSuccess(user.username, user.password);
                     //send the username and password to the app to auto-login and hide the sign-in form.
                 }else{
                     console.log("signup request failed");
+                    setError(response.data.message)
                     //handlePostError(the_field_that_has_an_error, what_the_error_is);
                 }
             });
         }
-	}
+    }
 
     //<Container/> is Material-UI's way of centering.
     return (<Container>
         <div>
+            <br />
+            <Collapse in={error}>
+                <Alert severity="error">
+                    {error}
+                </Alert>
+            </Collapse>
+
             <h1>Sign Up</h1>
             <form>
                 <div className="container">
@@ -114,7 +126,7 @@ function Signup(props) {
                         title={user.emailError}
                     required/>
                     <br/><br/>
-                    <Button variant="contained" onClick={submitForm}>Sign up</Button>
+                        <Button variant="contained" onClick={submitForm}>Sign up</Button>
                     <br/>
                     <br/>
                 </div> 
