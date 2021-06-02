@@ -16,15 +16,14 @@ import { useState } from 'react';
 
 function App() {
 
-    var credentials = {username: "",password: ""}
-
+    const [credentials, setCredentials] = useState({username: "",password: ""});
     const [listings, setListings] = useState([]);
     //I just put some random lorem ipsum text in there to make sure the sign in works. Remove it if you want.
     return (
     <div className="App" style={{display:'flex'}}>
         <CssBaseline />
-        <SignIn onSuccess={(u,p) =>{ credentials = {username: u, password: p}; console.log(credentials)}}/>
-        <Header getCredentials={()=>credentials}/>
+        <SignIn onSuccess={(u,p) =>{setCredentials({username: u, password: p}); console.log(credentials)}}/>
+        <Header credentials={credentials}/>
         <Sidebar setListings={setListings}/>
         <Content listings={listings}/>
     </div>

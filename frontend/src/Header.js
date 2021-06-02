@@ -27,7 +27,7 @@ export default function ButtonAppBar(props) {
             </b>
           </Typography>
           <div className={classes.toolbarButtons}>
-            <CreatePost getCredentials={props.getCredentials}/>
+            <CreatePost credentials={props.credentials}/>
           </div>
         </Toolbar>
       </AppBar>

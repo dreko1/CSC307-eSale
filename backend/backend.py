@@ -105,14 +105,14 @@ def post_listing():
         req = request.get_json()
         #Check that all required arguments are provided in the request.
         if not (req['username'] and req['password']):
-            return jsonify({'error': 'Must provide username and password!'}), 409
+            return jsonify({'message': 'Must be signed in to post!'}), 409
         if not (req['title'] and req['price'] and req['description'] and req['category'] and req['contact']):
-            return jsonify({'error': 'Must provide title, price, description, category, and contact!'}), 409
+            return jsonify({'message': 'Must provide title, price, description, category, and contact!'}), 409
         
         #Check that user exists and password is correct
         user = User.get(req['username'])
         if not user or not user.verify_credentials(req['password']):
-            return jsonify({'error': 'Invalid credentials'}), 404
+            return jsonify({'message': 'Invalid credentials'}), 404
 
         #create the listing
         listing = Listing.new_listing(user, req['title'], req['price'], req['description'], req['category'], req['contact'])

@@ -11,6 +11,8 @@ import { Input } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
+import Collapse from '@material-ui/core/Collapse';
+import Alert from '@material-ui/lab/Alert';
 import './App.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -49,9 +51,9 @@ export default function CreatePost(props){
       title: "",
       description: "",
       contact: "",
-      category: "All",
+      category: "",
       image_name: "",
-      price: "0",
+      price: "",
       city: "",
       state: "",
       zip: ""
@@ -85,15 +87,17 @@ export default function CreatePost(props){
         title: "",
         description: "",
         contact: "",
-        category: "All",
+        category: "",
         image_name: "",
-        price: "0",
+        price: "",
         city: "",
         state: "",
         zip: ""
       })
+      setError("")
       setOpen(false);
     };
+
     const handlePriceChange = (event) => {
       event.target.value = parseInt(event.target.value, 10);
       if(event.target.value===""){
@@ -102,33 +106,47 @@ export default function CreatePost(props){
       handleChange(event)
     }
 
+    const [error, setError] = React.useState("");
+
     const handleSubmit = async () => {
       const credentials = props.getCredentials();
-    
-      const listing = {
-        username: credentials.username,
-        password: credentials.password,
-        title: state.title,
-        price: state.price,
-        description: state.description,
-        category: state.category,
-        contact: state.contact,
-        city: state.city,
-        state: state.state,
-        zip: state.zip,
-        image: imageFile
-      }
+      if (credentials.username==="") {
+        setError("Must be signed in to post")
+      } else if (state.title==="") {
+        setError("Must enter a title")
+      } else if (state.category==="") {
+        setError("Must select a category")
+      } else if (state.price==="") {
+        setError("Must enter a price")
+      } else {
+
+        const listing = {
+          username: credentials.username,
+          password: credentials.password,
+          title: state.title,
+          price: state.price,
+          description: state.description,
+          category: state.category,
+          contact: state.contact,
+          city: state.city,
+          state: state.state,
+          zip: state.zip,
+          image: imageFile
+        }
       
-      makePostCall('/post', listing).then(response => {
+        makePostCall('/post', listing).then(response => {
           if(response.status===201){
-              console.log("new posting request succeded");
-              console.log(response);
-          }else{
-              console.log("new posting request failed");
-              //handleListingError(the_field_that_has_an_error, what_the_error_is);
+            console.log("new posting request succeded");
+            console.log(response);
+            setOpen(false);
+          } else{
+            console.log("new posting request failed");
+            setError(response.data.message)
+            //handleListingError(the_field_that_has_an_error, what_the_error_is);
           }
-      });
-      setOpen(false);
+        });
+        
+      }
     };
   
     return (
@@ -137,6 +155,12 @@ export default function CreatePost(props){
           Create Post
         </Button>
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="lg" fullWidth={true}>
+          <br />
+          <Collapse in={error}>
+            <Alert severity="error">
+              {error}
+            </Alert>
+          </Collapse>
           <DialogTitle id="form-dialog-title">Create Post</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -221,7 +245,6 @@ export default function CreatePost(props){
               inputProps={{
                 name: 'city',
               }}
-              required
               size="medium"
             />
             <TextField
