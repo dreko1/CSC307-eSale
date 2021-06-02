@@ -13,6 +13,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import Collapse from '@material-ui/core/Collapse';
 import Alert from '@material-ui/lab/Alert';
+import MuiAlert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
 import './App.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -59,6 +61,21 @@ export default function CreatePost(props){
       zip: ""
     });
 
+    function resetState() {
+      setState({
+        title: "",
+        description: "",
+        contact: "",
+        category: "",
+        image_name: "",
+        price: "",
+        city: "",
+        state: "",
+        zip: ""
+      });
+      return;
+    }
+
     const [imageFile, setImageFile] = React.useState("");
     
     var reader = new FileReader();
@@ -82,19 +99,10 @@ export default function CreatePost(props){
         setOpen(true);
       };
     
+
     const handleClose = () => {
-      setState({
-        title: "",
-        description: "",
-        contact: "",
-        category: "",
-        image_name: "",
-        price: "",
-        city: "",
-        state: "",
-        zip: ""
-      })
-      setError("")
+      resetState();
+      setError("");
       setOpen(false);
     };
 
@@ -107,6 +115,21 @@ export default function CreatePost(props){
     }
 
     const [error, setError] = React.useState("");
+    
+    // Functions for snackbar success message 
+    function Alert(props) {
+      return <MuiAlert elevation={6} variant="filled" {...props} />;
+    }
+
+    const [openMsg, setOpenMsg] = React.useState(false);
+
+    const handleCloseMsg = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+      setOpenMsg(false);
+    };
+
 
     const handleSubmit = async () => {
         const credentials = props.credentials;
@@ -139,6 +162,8 @@ export default function CreatePost(props){
             console.log("new posting request succeded");
             console.log(response);
             setOpen(false);
+            setOpenMsg(true);
+            resetState();
           } else{
             console.log("new posting request failed");
             setError(response.data.message)
@@ -308,8 +333,12 @@ export default function CreatePost(props){
               Submit
             </Button>
           </DialogActions>
-
         </Dialog>
+        <Snackbar open={openMsg} autoHideDuration={5000} onClose={handleCloseMsg}>
+          <Alert onClose={handleClose} severity="success">
+            Sucessfully Posted Listing!
+              </Alert>
+        </Snackbar>
       </div>
     );
 }

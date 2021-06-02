@@ -73,7 +73,7 @@ def register():
 def login():
     if request.method == 'POST':
         req = request.get_json()
-
+        
         #Check that all required arguments are provided in the request.
         if not (req['username'] and req['password']):
             return jsonify({'message': 'Must provide username and password!'}), 409
@@ -106,7 +106,7 @@ def post_listing():
         #Check that all required arguments are provided in the request.
         if not (req['username'] and req['password']):
             return jsonify({'message': 'Must be signed in to post!'}), 409
-        if not (req['title'] and req['price'] and req['description'] and req['category'] and req['contact']):
+        if not (req['title'] and req['price'] and req['category'] and req['contact']):
             return jsonify({'message': 'Must provide title, price, description, category, and contact!'}), 409
         
         #Check that user exists and password is correct
