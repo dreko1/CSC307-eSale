@@ -5,6 +5,12 @@ Class project for CSC-307.
 Create an online resource for selling various items similar to Craigslist. Users are able to post listings of items they are trying to sell to an end user.
 Users can either login or signup to their account to make a posting or view postings as guests.
 
+UI Prototype (Last Updated: April 28, 2021): https://www.figma.com/file/NgqeXRrMXrcXXmgWEI6XYi/eSale
+Class Diagram (Last Updated: May 10, 2021): https://drive.google.com/file/d/1tYxu7sjCaMDmf1jt66Nbp72yRPQbM_h7/view?usp=sharing
+Use Case Diagram (Last Updated: May 28, 2021): https://docs.google.com/drawings/d/1ZVqHPGAIh5IWPdC9F0MFxESRJTrOJ-yLIWArZ4MMTKQ/edit?usp=sharing 
+
+To run: 
+cd to frontend and then "npm start"
 
 
 The Backend is written in Python using Flask and the style guide specified at https://github.com/Microsoft/vscode-python (A vscode plugin)
