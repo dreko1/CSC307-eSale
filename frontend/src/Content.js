@@ -1,13 +1,10 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
-import IconButton from '@material-ui/core/IconButton';
-import InfoIcon from '@material-ui/icons/Info';
-import Popover from '@material-ui/core/Popover';
+import ListingPopover from './ListingPopover';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Content(props) {
   const classes = useStyles();
-  
+
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -43,7 +40,6 @@ function Content(props) {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
 
   console.log(props.listings);
   return (
@@ -56,32 +52,7 @@ function Content(props) {
           <GridListTileBar
             title={listing.title}
             subtitle={<span>seller: {listing.username}</span>}
-            actionIcon={
-              <IconButton aria-label={`info about ${listing.title}`} className={classes.icon} onClick={handleClick}>
-              <Popover
-                id={id}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'center',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'center',
-                }}
-              >
-              <Typography className={classes.typography}>Title: {listing.title}</Typography>
-              <Typography className={classes.typography}>Description: {listing.description}</Typography>
-              <Typography className={classes.typography}>Seller: {listing.username}</Typography>
-              <Typography className={classes.typography}>Contact: {listing.contact}</Typography>
-              <Typography className={classes.typography}>Price: ${listing.price}</Typography>
-              <Typography className={classes.typography}>Zip Code: {listing.location.zip}</Typography>
-              </Popover>
-                <InfoIcon />
-              </IconButton>
-            }
+            actionIcon={<ListingPopover data={listing}/>}
           />
           </GridListTile>
         ))}
