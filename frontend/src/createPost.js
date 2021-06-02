@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
     height: '100%'
   },
 }));
+
 const options = [
   'All',
   'Auto',
@@ -42,7 +43,7 @@ const MenuProps = {
       style: {
           maxHeight: 48 * 4.5 + 8,
           width: 250,
-      },
+      }, 
   },
 };
 
@@ -135,12 +136,8 @@ export default function CreatePost(props){
         const credentials = props.credentials;
         if (credentials.username==="") {
           setError("Must be signed in to post")
-        } else if (state.title==="") {
-          setError("Must enter a title")
-        } else if (state.category==="") {
-          setError("Must select a category")
-        } else if (state.price==="") {
-          setError("Must enter a price")
+        } else if (state.title === "" || state.category === "" || state.price === "") {
+          setError("Must enter all required fields")
         } else {
 
         const listing = {
@@ -164,6 +161,7 @@ export default function CreatePost(props){
             setOpen(false);
             setOpenMsg(true);
             resetState();
+            setError("");
           } else{
             console.log("new posting request failed");
             setError(response.data.message)
@@ -180,13 +178,14 @@ export default function CreatePost(props){
           Create Post
         </Button>
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="lg" fullWidth={true}>
-          <br />
-          <Collapse in={error}>
-            <Alert severity="error">
-              {error}
-            </Alert>
-          </Collapse>
-          <DialogTitle id="form-dialog-title">Create Post</DialogTitle>
+          <DialogTitle id="form-dialog-title">Create Post
+            <Collapse in={error} margin="dense">
+              <Alert severity="error">
+                {error}
+              </Alert> 
+            </Collapse>
+          </DialogTitle>
+
           <DialogContent>
             <TextField
               autoFocus

@@ -41,7 +41,6 @@ function Content(props) {
 
   const open = Boolean(anchorEl);
 
-  console.log(props.listings);
   return (
     <div className={classes.root}>
       <Toolbar />

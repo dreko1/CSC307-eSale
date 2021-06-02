@@ -3,7 +3,6 @@ import {Button, TextField, Container} from '@material-ui/core';
 import {useState} from 'react'
 import {makePostCall} from './axiosMethods'
 import Collapse from '@material-ui/core/Collapse';
-import IconButton from '@material-ui/core/IconButton';
 import Alert from '@material-ui/lab/Alert';
 import './App.css';
 
@@ -30,6 +29,7 @@ function Login(props) {
         }
         setUser(stateCopy);
     }
+
     const [error, setError] = React.useState("");
 
     //This function makes a post call, then has to-be-implemented logic based off of the response.
@@ -94,7 +94,5 @@ function Login(props) {
         </div>
     </Container>);
 }
-
-
 
 export default Login;

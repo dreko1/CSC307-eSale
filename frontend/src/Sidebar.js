@@ -39,7 +39,7 @@ export default function Sidebar(props) {
 
   function reloadListings(route){
     makeGetCall(route).then((posts)=>{
-      console.log(posts);
+      // console.log(posts);
       props.setListings(posts);
     });
   }
