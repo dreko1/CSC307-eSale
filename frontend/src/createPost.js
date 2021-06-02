@@ -8,7 +8,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {makePostCall} from './axiosMethods'
 import { Input } from '@material-ui/core';
-import FilterMenu from './FilterMenu';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
 import './App.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -17,7 +19,28 @@ const useStyles = makeStyles((theme) => ({
     height: '100%'
   },
 }));
+const options = [
+  'All',
+  'Auto',
+  'Bikes',
+  'Boats',
+  'Computers',
+  'Household Items',
+  'Music',
+  'Sports',
+  'Tools',
+  'Toys',
+  'Video Games'
+];
 
+const MenuProps = {
+  PaperProps: {
+      style: {
+          maxHeight: 48 * 4.5 + 8,
+          width: 250,
+      },
+  },
+};
 export default function CreatePost(props){
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
@@ -25,8 +48,14 @@ export default function CreatePost(props){
       title: "",
       description: "",
       contact: "",
+<<<<<<< HEAD
       catgegory: "",
       image_name: ""
+=======
+      category: "All",
+      image_name: "",
+      price: "0"
+>>>>>>> 2f00591042b53896e741ad8f7626aef40a1af205
     });
 
     const [imageFile, setImageFile] = React.useState("");
@@ -37,7 +66,7 @@ export default function CreatePost(props){
     function uploadImageFile(e){
       if (e.target && e.target.files[0]) {
         reader.readAsDataURL(e.target.files[0]);
-          setState({image_name: e.target.files[0].name});
+        setState({...state, image_name: e.target.files[0].name})
       }else{
         setImageFile(null);
       }
@@ -61,7 +90,14 @@ export default function CreatePost(props){
         image_name: ""})
       setOpen(false);
     };
-  
+    const handlePriceChange = (event) => {
+      event.target.value = parseInt(event.target.value, 10);
+      if(event.target.value==""){
+        event.target.value = 0;
+      }
+      handleChange(event)
+    }
+
     const handleSubmit = async () => {
       const credentials = props.getCredentials();
     
@@ -69,7 +105,7 @@ export default function CreatePost(props){
         username: credentials.username,
         password: credentials.password,
         title: state.title,
-        price: 1,
+        price: state.price,
         description: state.description,
         category: state.category,
         contact: state.contact,
@@ -78,7 +114,6 @@ export default function CreatePost(props){
         zip: "no zip provided",
         image: imageFile
       }
-      console.log(listing);
       
       makePostCall('/post', listing).then(response => {
           if(response.status===201){
@@ -148,28 +183,65 @@ export default function CreatePost(props){
               rows="2"
             />
           </DialogContent>
+          <DialogContent>
+            <DialogContentText>
+            </DialogContentText>
+            <TextField
+              id="standard-number"
+              label="Price (US Dollars)" 
+              type="number"
+              value = {state.price}
+              onChange = {handlePriceChange}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              inputProps={{ 
+                name: 'price',
+              }}
+              required
+              size="medium"
+              margin="dense"
+            />
+          </DialogContent>
 
           <DialogContent>
             <DialogContentText>
             </DialogContentText>
+<<<<<<< HEAD
             <FilterMenu 
               onChange={handleChange}
               inputProps={{
                 name: 'category',
               }}
             />,
+=======
+            <InputLabel>Category</InputLabel>
+            <Select
+                autowidth
+                labelId="category-label"
+                required
+                id="category-name"
+                onChange={handleChange}
+                name='category'
+                MenuProps={MenuProps}
+                defaultValue="All"
+            >
+                {options.map((option) => (
+                    <MenuItem key={option} value={option} selected={option === state.category}>
+                        {option}
+                    </MenuItem>
+                ))}
+            </Select>
+>>>>>>> 2f00591042b53896e741ad8f7626aef40a1af205
           </DialogContent>
 
           <DialogContent>
-            <DialogContentText>Upload Image</DialogContentText>
+            <DialogContentText>{"Upload Image - "+state.image_name}</DialogContentText>
             <label>
               <Input id="image" name="myImage" style={{ display: 'none' }} type="file" onChange={uploadImageFile}/>
             <Button variant="contained" component="span">
-                Choose File
+                Select an Image
               </Button>
-              <div>
-                {state.image_name}
-              </div>
             </label>
           </DialogContent>
           <DialogActions>
